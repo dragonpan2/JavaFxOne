@@ -64,7 +64,8 @@ public class JavaFXApplication1 extends Application {
         //misc label
         Label statut = new Label("Awaiting Input...");
         
-        
+        // l1 hbox
+        HBox hBoxOne = new HBox();
         //VBox label description product
         VBox vboxLabel = new VBox();
         vboxLabel.setSpacing(10);
@@ -72,11 +73,15 @@ public class JavaFXApplication1 extends Application {
         Label lblProductName = new Label("Name");
         Label lblProductPrice = new Label("Price");
         lblProductCode.setTextFill(Color.web("#bdc3c7"));
+        lblProductName.setTextFill(Color.web("#bdc3c7"));
+        lblProductPrice.setTextFill(Color.web("#bdc3c7"));
         lblProductCode.setFont(Font.font("Abel",FontWeight.BOLD, 12));
+        lblProductName.setFont(Font.font("Abel",FontWeight.BOLD, 12));
+        lblProductPrice.setFont(Font.font("Abel",FontWeight.BOLD, 12));
         vboxLabel.getChildren().addAll(lblProductCode, lblProductName, lblProductPrice);
-        paneOperation.getChildren().add(vboxLabel);
-        vboxLabel.setLayoutX(250);
-        vboxLabel.setLayoutY(50);
+      //  paneOperation.getChildren().add(vboxLabel);
+      //  vboxLabel.setLayoutX(250);
+      //  vboxLabel.setLayoutY(50);
       //  vboxLabel.setStyle("-fx-background-color: #757575;");
         //-------------------------------
         //VBox ScanValue  product
@@ -89,20 +94,64 @@ public class JavaFXApplication1 extends Application {
         TFProductPrice.setAlignment(Pos.CENTER);
 
         vboxTF.getChildren().addAll(TFProductCode, TFProductName, TFProductPrice);
-        paneOperation.getChildren().add(vboxTF);
-        vboxTF.setLayoutX(550);
-        vboxTF.setLayoutY(50);
+        hBoxOne.getChildren().addAll(vboxLabel,vboxTF);
+        hBoxOne.setSpacing(25);
+        //hBoxOne.setStyle("-fx-background-color:#2c3e00;");
+        hBoxOne.setMaxSize(350, 50);
+        
+        StackPane stackH1 = new StackPane();
+        stackH1.getChildren().add(hBoxOne);
+        stackH1.setStyle("-fx-background-color:#2c3e50;");
+        stackH1.setLayoutX(250);
+        stackH1.setLayoutY(50);
+        stackH1.setPrefSize(450, 100);
+        StackPane.setAlignment(hBoxOne,Pos.CENTER);
+        paneOperation.getChildren().add(stackH1);
+        
         //--------------------------------
         //description User
+        HBox hBoxTwo = new HBox();
+        StackPane stackH2 = new StackPane();
         VBox vboxLabelUser = new VBox();
         vboxLabelUser.setSpacing(10);
         Label lblUserID = new Label("Card ID");
         Label lblUserName = new Label("Name");
         Label lblUserBalance = new Label("Account Balance");
+        lblUserID.setTextFill(Color.web("#bdc3c7"));
+        lblUserName.setTextFill(Color.web("#bdc3c7"));
+        lblUserBalance.setTextFill(Color.web("#bdc3c7"));
+        lblUserID.setFont(Font.font("Abel",FontWeight.BOLD, 12));
+        lblUserName.setFont(Font.font("Abel",FontWeight.BOLD, 12));
+        lblUserBalance.setFont(Font.font("Abel",FontWeight.BOLD, 12));
         vboxLabelUser.getChildren().addAll(lblUserID, lblUserName, lblUserBalance);
-         paneOperation.getChildren().add(vboxLabelUser);
+        
+        //TF2
+        VBox vboxTF2 = new VBox();
+        TextField TFID = new TextField("-");
+        TextField TFName = new TextField("-");
+        TextField TFBalance = new TextField("0");
+        TFID.setEditable(false);
+        TFID.setAlignment(Pos.CENTER);
+        TFName.setAlignment(Pos.CENTER);
+        TFBalance.setAlignment(Pos.CENTER);
+        vboxTF2.getChildren().addAll(TFID, TFName,TFBalance);
+        
+        //
+        hBoxTwo.setSpacing(25);
+        hBoxTwo.setMaxSize(350, 50);
+        hBoxTwo.getChildren().addAll(vboxLabelUser,vboxTF2);
+        stackH2.getChildren().addAll(hBoxTwo);
+       // stackH2.setStyle("-fx-background-color:#2c3e50;");
+        stackH2.setStyle("-fx-background-color: #34495e;");
+        stackH2.setLayoutX(250);
+        stackH2.setLayoutY(200);
+        stackH2.setPrefSize(450, 100);
+         paneOperation.getChildren().add(stackH2);
          vboxLabelUser.setLayoutX(250);
          vboxLabelUser.setLayoutY(150);
+         
+         
+         
         //-----------------------------
         btnTest.setText("Button Exemple");
         btnOperation.setPrefSize(100, 50);
@@ -119,13 +168,13 @@ public class JavaFXApplication1 extends Application {
         //-----------------------------
         
          
-        
-        paneOperation.setStyle("-fx-background-color: #34495e;");
+        paneOperation.setStyle("-fx-background-color:#2c3e50;");
+     //   paneOperation.setStyle("-fx-background-color: #34495e;");
         tabOperation.setContent(paneOperation);
         tabManagement.setContent(paneAdmin);
         //root.getChildren().addAll(btnTest,hboxTop);
         root.getChildren().add(tabPane);
-        Scene scene = new Scene(root, 1000, 800);
+        Scene scene = new Scene(root, 1000, 700);
     //    scene.setFill(Color.DARKGREY);
         
          
