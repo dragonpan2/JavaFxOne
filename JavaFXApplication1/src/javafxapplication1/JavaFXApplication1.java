@@ -102,6 +102,7 @@ public class JavaFXApplication1 extends Application {
         StackPane stackH1 = new StackPane();
         stackH1.getChildren().add(hBoxOne);
         stackH1.setStyle("-fx-background-color:#2c3e50;");
+        stackH1.setStyle("-fx-background-color: #34495e;");
         stackH1.setLayoutX(250);
         stackH1.setLayoutY(50);
         stackH1.setPrefSize(450, 100);
@@ -131,6 +132,8 @@ public class JavaFXApplication1 extends Application {
         TextField TFName = new TextField("-");
         TextField TFBalance = new TextField("0");
         TFID.setEditable(false);
+        TFName.setEditable(false);
+        TFBalance.setEditable(false);
         TFID.setAlignment(Pos.CENTER);
         TFName.setAlignment(Pos.CENTER);
         TFBalance.setAlignment(Pos.CENTER);
@@ -166,6 +169,33 @@ public class JavaFXApplication1 extends Application {
             }
         });
         //-----------------------------
+        
+        ///Operation: Instruction
+        StackPane stackIns = new StackPane();
+        stackIns.setPrefSize(550, 100);
+        VBox instructionVBox = new VBox();
+        instructionVBox.setMaxSize(500, 50);
+        
+        Label insLogin = new Label("To Login: Scan your card until your information is on the screen");
+        Label insLogout = new Label("To Logout: Scan your card again while logged in");
+        Label insProduct = new Label("To Examine a product: Scan the produit whille logged out");
+        Label insBuy = new Label("To Buy a product: First log in with your card then scan the product");
+        insLogin.setTextFill(Color.web("#bdc3c7"));
+        insLogout.setTextFill(Color.web("#bdc3c7"));
+        insProduct.setTextFill(Color.web("#bdc3c7"));
+        insBuy.setTextFill(Color.web("#bdc3c7"));
+        //
+        insLogin.setFont(Font.font("Abel",FontWeight.BOLD, 12));
+        insLogout.setFont(Font.font("Abel",FontWeight.BOLD, 12));
+        insProduct.setFont(Font.font("Abel",FontWeight.BOLD, 12));
+        insBuy.setFont(Font.font("Abel",FontWeight.BOLD, 12));
+        instructionVBox.getChildren().addAll(insLogin,insLogout, insProduct, insBuy);
+        stackIns.getChildren().add(instructionVBox);
+        stackIns.setLayoutX(250);
+        stackIns.setLayoutY(450);
+        stackIns.setStyle("-fx-background-color: #34495e;");
+        
+        paneOperation.getChildren().add(stackIns);
         
          
         paneOperation.setStyle("-fx-background-color:#2c3e50;");
