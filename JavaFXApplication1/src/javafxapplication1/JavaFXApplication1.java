@@ -241,21 +241,34 @@ public class JavaFXApplication1 extends Application {
          ///seletion menu
          
          VBox selectionVB = new VBox();
+         selectionVB.setAlignment(Pos.CENTER);
+         selectionVB.setSpacing(4);
          Button addProductBtn = new Button("Add new Product");
          Button addUserBtn = new Button("Add new User");
          Button manageProductBtn = new Button("Manage Inventory");
          Button manageUserBtn = new Button("Manage Users");
          Button logoutBtn = new Button("Logout");
          
+         addProductBtn.setPrefSize(150, 20);
+         addUserBtn.setPrefSize(150, 20);
+         manageProductBtn.setPrefSize(150, 20);
+         manageUserBtn.setPrefSize(150, 20);
+         logoutBtn.setPrefSize(150, 20);
+         
          Pane newUserPane = new Pane();
          Pane newProductPane = new Pane();
-         iniNewProduct(newProductPane, selection);
-         paneAdmin.getChildren().add(newProductPane);
+         Pane manageUserPane = new Pane();
          Pane manageProductPane = new Pane();
-         iniManageProduct(manageProductPane, selection);
+         
+          iniNewProduct(newProductPane, selection);
+          iniManageProduct(manageProductPane, selection);
+          iniNewUser(newUserPane, selection);
+          iniManageUser(manageUserPane, selection); 
+          
+         paneAdmin.getChildren().add(newProductPane);         
          paneAdmin.getChildren().add(manageProductPane);
-         iniNewUser(newUserPane, selection);
          paneAdmin.getChildren().add(newUserPane);
+         paneAdmin.getChildren().add(manageUserPane);
          
          addProductBtn.setOnAction(new EventHandler<ActionEvent>() {
             @Override
@@ -284,6 +297,7 @@ public class JavaFXApplication1 extends Application {
             @Override
             public void handle(ActionEvent event) {
                   selection.setVisible(false);
+                  manageUserPane.setVisible(true);
             }
         });
          logoutBtn.setOnAction(new EventHandler<ActionEvent>() {
@@ -294,7 +308,16 @@ public class JavaFXApplication1 extends Application {
             }
         });
          selectionVB.getChildren().addAll(addProductBtn,addUserBtn,manageProductBtn,manageUserBtn, logoutBtn);
-         selection.getChildren().add(selectionVB);
+         StackPane stackPaneSelection = new StackPane();
+         stackPaneSelection.setAlignment(Pos.CENTER);
+         stackPaneSelection.setLayoutX(400);
+         stackPaneSelection.setLayoutY(250);
+         stackPaneSelection.getChildren().add(selectionVB);
+         stackPaneSelection.setMaxSize(250, 350);
+         stackPaneSelection.setMinSize(200, 200);
+       selection.getChildren().add(stackPaneSelection);
+       stackPaneSelection.setStyle("-fx-background-color: #34495e;");
+   //      selection.getChildren().add(selectionVB);
          paneAdmin.getChildren().add(selection);
         ///-----------------------------------------------------------------------------------------------------------------------------------------------------
         //  stage >scene > root > component 
@@ -500,6 +523,22 @@ public class JavaFXApplication1 extends Application {
         }
     }
     public void iniManageUser(Pane manageUserPane, Pane selection) {
+        manageUserPane.setVisible(false);
+         Button backButton = new Button("Return");
+        manageUserPane.getChildren().add(backButton);
+        backButton.setLayoutX(400);
+        backButton.setLayoutY(50);
+        
+        backButton.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                  selection.setVisible(true);
+                  manageUserPane.setVisible(false);
+            }
+        });
+        
+        
+        
         
     }
 
