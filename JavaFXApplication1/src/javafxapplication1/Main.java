@@ -63,7 +63,7 @@ public class Main {
     public static void writeUserDataFile (UserList userListMaster) {
         try {
             
-        FileOutputStream fileOut = new FileOutputStream("userData.ser");
+        FileOutputStream fileOut = new FileOutputStream("userData.txt");
         ObjectOutputStream out = new ObjectOutputStream(fileOut);
         out.writeObject(userListMaster);
         out.close();
@@ -76,10 +76,9 @@ public class Main {
         }
     }
     public static void writeProdctDataFile (ProductList productListMaster) {
-        productListMaster.productList = new ArrayList<Product>();
         System.out.println("Writing File");
         try {
-        FileOutputStream fileOut = new FileOutputStream("productData.ser");
+        FileOutputStream fileOut = new FileOutputStream("productData.txt");
         ObjectOutputStream out = new ObjectOutputStream(fileOut);
         out.writeObject(productListMaster);
         out.close();
@@ -87,15 +86,15 @@ public class Main {
         }
         
         catch (IOException i) {
-            
+            i.printStackTrace();
             System.out.println("Exception");
         }
         System.out.println("File Writed");
     }
-    public static void readProductDataFile(ProductList productListMaster) {
+    public static ProductList readProductDataFile(ProductList productListMaster) {
         System.out.println("Reading File");
         try {
-        FileInputStream fileIn = new FileInputStream("productData.ser");
+        FileInputStream fileIn = new FileInputStream("productData.txt");
         ObjectInputStream in = new ObjectInputStream(fileIn);
         productListMaster = (ProductList) in.readObject();
         in.close();
@@ -105,16 +104,16 @@ public class Main {
             System.out.println("Exception");
         }
         catch (IOException i) {
+            i.printStackTrace();
             System.out.println("Exception");
         }
         System.out.println("File Read");
        // System.out.println(productListMaster.productList.get(0).getProductCode());
+        return productListMaster;
     }
-    public static void readUserDataFile(UserList userListMaster) {
+    public static UserList readUserDataFile(UserList userListMaster) {
         try {
-            
-        
-        FileInputStream fileIn = new FileInputStream("userData.ser");
+        FileInputStream fileIn = new FileInputStream("userData.txt");
         ObjectInputStream in = new ObjectInputStream(fileIn);
         userListMaster = (UserList) in.readObject();
         in.close();
@@ -126,6 +125,7 @@ public class Main {
         catch (IOException i) {
             System.out.println("Exception");
         }
+        return userListMaster;
     }
     public static void addNewProduct(ProductList productListMaster, String productCode, String productName, double price, int quantityToAdd) {
         Product newProduct = new Product();

@@ -36,7 +36,7 @@ public class JavaFXApplication1 extends Application {
 
     @Override
     public void start(Stage primaryStage)  {
-            String barCode;
+        String barCode;
         Button btnTest = new Button();
         Button btnOperation = new Button("Operation");
         Button btnStatistic = new Button("Statistic");
@@ -60,7 +60,6 @@ public class JavaFXApplication1 extends Application {
         Tab tabManagement = new Tab("Administration");
         Tab tabStatistic = new Tab("Statistic");
         Tab tabExpansion = new Tab("Expansion");
-       // tabOperation.setStyle("-fx-background-color:#2c3e50;");
         tabOperation.setClosable(false);
         tabManagement.setClosable(false);
         tabStatistic.setClosable(false);
@@ -85,10 +84,6 @@ public class JavaFXApplication1 extends Application {
         lblProductName.setFont(Font.font("Abel",FontWeight.BOLD, 12));
         lblProductPrice.setFont(Font.font("Abel",FontWeight.BOLD, 12));
         vboxLabel.getChildren().addAll(lblProductCode, lblProductName, lblProductPrice);
-      //  paneOperation.getChildren().add(vboxLabel);
-      //  vboxLabel.setLayoutX(250);
-      //  vboxLabel.setLayoutY(50);
-      //  vboxLabel.setStyle("-fx-background-color: #757575;");
         //-------------------------------
         //VBox ScanValue  product
         VBox vboxTF = new VBox();
@@ -102,7 +97,6 @@ public class JavaFXApplication1 extends Application {
         vboxTF.getChildren().addAll(TFProductCode, TFProductName, TFProductPrice);
         hBoxOne.getChildren().addAll(vboxLabel,vboxTF);
         hBoxOne.setSpacing(25);
-        //hBoxOne.setStyle("-fx-background-color:#2c3e00;");
         hBoxOne.setMaxSize(350, 50);
         
         StackPane stackH1 = new StackPane();
@@ -159,8 +153,6 @@ public class JavaFXApplication1 extends Application {
          vboxLabelUser.setLayoutX(250);
          vboxLabelUser.setLayoutY(150);
          
-         
-         
         //-----------------------------
         btnTest.setText("Button Exemple");
         btnOperation.setPrefSize(100, 50);
@@ -203,7 +195,6 @@ public class JavaFXApplication1 extends Application {
         
         paneOperation.getChildren().add(stackIns);
         
-         
         paneOperation.setStyle("-fx-background-color:#2c3e50;");
      //   paneOperation.setStyle("-fx-background-color: #34495e;");
         tabOperation.setContent(paneOperation);
@@ -217,22 +208,39 @@ public class JavaFXApplication1 extends Application {
          //Admin tab
          ///login tab
          Pane loginPane = new Pane();
+         StackPane loginStack = new StackPane();
          PasswordField passField = new PasswordField();
+         passField.setAlignment(Pos.CENTER);
          Label passLabel = new Label("Passcode");
          Button passBtn = new Button("Confirm");
          
-         passLabel.setLayoutX(300);
-         passField.setLayoutX(400);
-         passBtn.setLayoutY(50);
-         passBtn.setLayoutX(400);
+         passBtn.setTextFill(Color.web("#bdc3c7"));
+         passBtn.setFont(Font.font("Abel",FontWeight.BOLD, 12));
+         passBtn.setStyle("-fx-background-color: #2E4053;");
          
+         loginStack.setAlignment(Pos.CENTER);
+         loginPane.setMaxSize(260, 150);
+         loginStack.setMinSize(1000, 700);
+         loginPane.setStyle("-fx-background-color: #34495e;");
+         
+         passLabel.setLayoutX(5);
+         passField.setLayoutX(75);
+         passLabel.setLayoutY(50);
+         passField.setLayoutY(50);
+         passBtn.setLayoutY(100);
+         passBtn.setLayoutX(100);
+         
+         passLabel.setTextFill(Color.web("#bdc3c7"));
+         passLabel.setFont(Font.font("Abel",FontWeight.BOLD, 12));
+          
          loginPane.getChildren().addAll(passField, passLabel, passBtn);
-         paneAdmin.getChildren().add(loginPane);
+         loginStack.getChildren().addAll(loginPane);
+         paneAdmin.getChildren().add(loginStack);
          passBtn.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                if (passField.getText().equals("8462")) {
-                    loginPane.setVisible(false);
+                if (passField.getText().equals("1")) {
+                    loginStack.setVisible(false);
                     selection.setVisible(true);
                     passField.clear();
                 }
@@ -261,9 +269,7 @@ public class JavaFXApplication1 extends Application {
          Pane manageProductPane = new Pane();
          
           iniNewProduct(newProductPane, selection);
-          iniManageProduct(manageProductPane, selection);
           iniNewUser(newUserPane, selection);
-          iniManageUser(manageUserPane, selection); 
           
          paneAdmin.getChildren().add(newProductPane);         
          paneAdmin.getChildren().add(manageProductPane);
@@ -290,7 +296,8 @@ public class JavaFXApplication1 extends Application {
             public void handle(ActionEvent event) {
                   selection.setVisible(false);
                    System.out.println("Open manager");
-                  manageProductPane.setVisible(true);
+              //    manageProductPane.setVisible(true);
+                   iniManageProduct(manageProductPane, selection);
             }
         });
          manageUserBtn.setOnAction(new EventHandler<ActionEvent>() {
@@ -304,7 +311,7 @@ public class JavaFXApplication1 extends Application {
             @Override
             public void handle(ActionEvent event) {
                  selection.setVisible(false);
-                 loginPane.setVisible(true);
+                 loginStack.setVisible(true);
             }
         });
          selectionVB.getChildren().addAll(addProductBtn,addUserBtn,manageProductBtn,manageUserBtn, logoutBtn);
@@ -335,7 +342,7 @@ public class JavaFXApplication1 extends Application {
         launch(args);
     }
     
-    public  void iniNewProduct(Pane newProductPane, Pane selection) {
+    public void iniNewProduct(Pane newProductPane, Pane selection) {
      
         
         Label lblProductCode = new Label("Product Code Bar");
@@ -359,7 +366,7 @@ public class JavaFXApplication1 extends Application {
         newProductGrid.add(TFProductPrice, 1, 2);
         newProductGrid.add(TFProductQuantity, 1, 3);
         
-       newProductGrid.setStyle("-fx-background-color:#2c3e50;");
+        newProductGrid.setStyle("-fx-background-color:#2c3e50;");
         newProductPane.setVisible(false);
         
         Button createButton = new Button("Create New Product");
@@ -374,10 +381,9 @@ public class JavaFXApplication1 extends Application {
         createButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-              //  Main.firstTimeProtocol();
             ProductList productList = new ProductList();
             productList.productList = new ArrayList<Product>();
-            Main.readProductDataFile(productList);
+           productList = Main.readProductDataFile(productList);
             Product product = new Product();
             product.setProductCode(TFProductCode.getText());
             product.setProductName(TFProductName.getText());
@@ -455,11 +461,11 @@ public class JavaFXApplication1 extends Application {
         
     }
     public void iniManageProduct(Pane manageProductPane, Pane selection) {
-        manageProductPane.setVisible(false);
+       // manageProductPane.setVisible(false);
         ScrollPane productScrollPane = new ScrollPane();
         ProductList masterProductList = new ProductList();
         masterProductList.productList = new ArrayList<Product>();
-        Main.readProductDataFile(masterProductList);
+     masterProductList =  Main.readProductDataFile(masterProductList);
         
         Button backButton = new Button("Return");
         manageProductPane.getChildren().add(backButton);
@@ -469,57 +475,59 @@ public class JavaFXApplication1 extends Application {
             @Override
             public void handle(ActionEvent event) {
                   selection.setVisible(true);
-                  manageProductPane.setVisible(false);
+               //   manageProductPane.setVisible(false);
+               //   manageProductPane
             }
         });
         
         for (int i = 0; i < masterProductList.productList.size(); i++) {
-            
-           
-            
-        HBox hBoxOne = new HBox();
-        VBox vboxLabel = new VBox();
-        vboxLabel.setSpacing(10);
-        
-        Label lblProductCode = new Label("Product Code Bar");
-        Label lblProductName = new Label("Name");
-        Label lblProductPrice = new Label("Price");
-        Label lblProductQuantity = new Label("Quantity");
-        lblProductCode.setTextFill(Color.web("#bdc3c7"));
-        lblProductName.setTextFill(Color.web("#bdc3c7"));
-        lblProductPrice.setTextFill(Color.web("#bdc3c7"));
-        lblProductQuantity.setTextFill(Color.web("#bdc3c7"));
-        lblProductCode.setFont(Font.font("Abel",FontWeight.BOLD, 12));
-        lblProductName.setFont(Font.font("Abel",FontWeight.BOLD, 12));
-        lblProductPrice.setFont(Font.font("Abel",FontWeight.BOLD, 12));
-        lblProductQuantity.setFont(Font.font("Abel",FontWeight.BOLD, 12));
-        vboxLabel.getChildren().addAll(lblProductCode, lblProductName, lblProductPrice,lblProductQuantity);
-
-        VBox vboxTF = new VBox();
-        TextField TFProductCode = new TextField("-");
-        TextField TFProductName = new TextField("-");
-        TextField TFProductPrice = new TextField("0");
-        TextField TFProductQuantity = new TextField("0");
-        TFProductCode.setAlignment(Pos.CENTER);
-        TFProductName.setAlignment(Pos.CENTER);
-        TFProductPrice.setAlignment(Pos.CENTER);
-        TFProductQuantity.setAlignment(Pos.CENTER);
-
-        vboxTF.getChildren().addAll(TFProductCode, TFProductName, TFProductPrice,TFProductQuantity);
-        hBoxOne.getChildren().addAll(vboxLabel,vboxTF);
-        hBoxOne.setSpacing(25);
-        hBoxOne.setMaxSize(350, 50);
-        
-        StackPane stackH1 = new StackPane();
-        stackH1.getChildren().add(hBoxOne);
-        stackH1.setStyle("-fx-background-color:#2c3e50;");
-        stackH1.setStyle("-fx-background-color: #34495e;");
-        stackH1.setLayoutX(250);
-        stackH1.setLayoutY(50*(1+i));
-        stackH1.setPrefSize(450, 100);
-        stackH1.setAlignment(hBoxOne,Pos.CENTER);
-        productScrollPane.getChildrenUnmodifiable().add(stackH1);
-        manageProductPane.getChildren().add(productScrollPane);
+          System.out.println("Size: " + masterProductList.productList.size());
+          System.out.println(i);
+          System.out.println(     masterProductList.productList.get(i).getProductName());
+               
+//        HBox hBoxOne = new HBox();
+//        VBox vboxLabel = new VBox();
+//        vboxLabel.setSpacing(10);
+//        
+//        Label lblProductCode = new Label("Product Code Bar");
+//        Label lblProductName = new Label("Name");
+//        Label lblProductPrice = new Label("Price");
+//        Label lblProductQuantity = new Label("Quantity");
+//        lblProductCode.setTextFill(Color.web("#bdc3c7"));
+//        lblProductName.setTextFill(Color.web("#bdc3c7"));
+//        lblProductPrice.setTextFill(Color.web("#bdc3c7"));
+//        lblProductQuantity.setTextFill(Color.web("#bdc3c7"));
+//        lblProductCode.setFont(Font.font("Abel",FontWeight.BOLD, 12));
+//        lblProductName.setFont(Font.font("Abel",FontWeight.BOLD, 12));
+//        lblProductPrice.setFont(Font.font("Abel",FontWeight.BOLD, 12));
+//        lblProductQuantity.setFont(Font.font("Abel",FontWeight.BOLD, 12));
+//        vboxLabel.getChildren().addAll(lblProductCode, lblProductName, lblProductPrice,lblProductQuantity);
+//
+//        VBox vboxTF = new VBox();
+//        TextField TFProductCode = new TextField("-");
+//        TextField TFProductName = new TextField("-");
+//        TextField TFProductPrice = new TextField("0");
+//        TextField TFProductQuantity = new TextField("0");
+//        TFProductCode.setAlignment(Pos.CENTER);
+//        TFProductName.setAlignment(Pos.CENTER);
+//        TFProductPrice.setAlignment(Pos.CENTER);
+//        TFProductQuantity.setAlignment(Pos.CENTER);
+//
+//        vboxTF.getChildren().addAll(TFProductCode, TFProductName, TFProductPrice,TFProductQuantity);
+//        hBoxOne.getChildren().addAll(vboxLabel,vboxTF);
+//        hBoxOne.setSpacing(25);
+//        hBoxOne.setMaxSize(350, 50);
+//        
+//        StackPane stackH1 = new StackPane();
+//        stackH1.getChildren().add(hBoxOne);
+//        stackH1.setStyle("-fx-background-color:#2c3e50;");
+//        stackH1.setStyle("-fx-background-color: #34495e;");
+//        stackH1.setLayoutX(250);
+//        stackH1.setLayoutY(50*(1+i));
+//        stackH1.setPrefSize(450, 100);
+//        stackH1.setAlignment(hBoxOne,Pos.CENTER);
+//        productScrollPane.getChildrenUnmodifiable().add(stackH1);
+//        manageProductPane.getChildren().add(productScrollPane);
         }
     }
     public void iniManageUser(Pane manageUserPane, Pane selection) {

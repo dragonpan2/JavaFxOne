@@ -5,11 +5,13 @@
  */
 package javafxapplication1;
 
+import java.io.Serializable;
+
 /**
  *
  * @author panbe
  */
-public class Product {
+public class Product implements Serializable {
     private String productCode;
     private double price;
     private String productName;
