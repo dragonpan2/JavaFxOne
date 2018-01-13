@@ -36,16 +36,28 @@ public class Main {
 //        writeUserDataFile(userListMaster);
 //        writeProdctDataFile(productListMaster);
     }
-    public void userProductLookup() {
+    public void userProductLookup(String barcode) {
+        
+        
         
     }
-    public void readOperation(UserList userListMaster, ProductList productListMaster, String barCode) {
-        readUserDataFile(userListMaster);
-        readProductDataFile(productListMaster);
+    public static void readOperation(String barCode) {
+        ProductList productListMaster = new ProductList();
+        UserList userListMaster = new UserList();
+        
+        userListMaster.userList = new ArrayList<User>();
+        productListMaster.productList = new ArrayList<Product>();
+        
+        productListMaster = readProductDataFile(productListMaster);
+        userListMaster = readUserDataFile(userListMaster);
+        
         int userIndice =0;
         int productIndice = 0;
                 userIndice= userListMaster.lookUpUser(barCode);
                 productIndice = productListMaster.lookUpProduct(barCode);
+        if (userIndice != -1 && productIndice != -1) {
+            //major problem, barcode is in both database
+        }
         if (userIndice != -1) {
             //then it's a user lookup
             ///next is wait for product then do buy
@@ -59,6 +71,10 @@ public class Main {
             // barcode is not in any database
             /// next is ready for new operation
         }
+        
+        ///saved all database
+        writeUserDataFile(userListMaster);
+        writeProdctDataFile(productListMaster);
     }
     public static void writeUserDataFile (UserList userListMaster) {
         try {
