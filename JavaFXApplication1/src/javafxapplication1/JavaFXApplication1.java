@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
@@ -45,6 +46,10 @@ public static String barcode;
         Pane paneOperation = new Pane();
         Pane paneAdmin = new Pane();
         
+        ArrayList<TextField> TFList = new ArrayList();
+        
+        int userIndice = -1;
+        int productIndice = -1;
        
         
         ArrayList<String> keyCodebarList = new ArrayList();
@@ -69,7 +74,8 @@ public static String barcode;
             }
         });
         //-----------------------------
-        iniOperationPane(paneOperation);
+      TFList =   iniOperationPane(paneOperation);
+      //par one
         iniAdminPane(paneAdmin);
         
         tabOperation.setContent(paneOperation);
@@ -77,6 +83,8 @@ public static String barcode;
         
         root.getChildren().add(tabPane);
         Scene scene = new Scene(root, 1000, 700);
+        
+        scene.getStylesheets().add("IMS.css");
         
         // scene.setOnKeyTyped(this);
          scene.setOnKeyPressed(new EventHandler<KeyEvent>() {
@@ -86,8 +94,9 @@ public static String barcode;
                 if (event.getCode().toString().equals("ENTER")) {
                    barcode = keyConsume(keyCodebarList);
                     System.out.println(barcode);
-                    Main.readOperation(barcode);
-                    
+                    ReadReturn readReturn= Main.readOperation(barcode, userIndice, productIndice);
+                    //par two
+                    paneOperation.getChildren();//
                }
                 else {
                     number = digitConverter(event.getCode().toString());
@@ -102,6 +111,10 @@ public static String barcode;
         primaryStage.setScene(scene);
         primaryStage.show();
         primaryStage.setResizable(false);
+        primaryStage.setOnCloseRequest(e -> Platform.exit());
+        
+        
+        
         
         Timer timer = new Timer();
         TimerTask timerTask = new TimerTask() {
@@ -109,13 +122,21 @@ public static String barcode;
                 System.out.println("Runned");
             }
         };
-        timer.schedule(timerTask, 5000l);
+        TimerTask timerResetUI = new TimerTask() {
+            public  void run () {
+                
+            }
+        };
+        TimerTask timerResetPI = new TimerTask() {
+            public  void run () {
+                //productIndice = -1;
+            }
+        };
+                
+        timer.schedule(timerTask, 15000l);
        
     }
 
-    /**
-     * @param args the command line arguments
-     */
     public static void main(String[] args) {
         launch(args);
     }
@@ -243,70 +264,79 @@ public static String barcode;
         ScrollPane productScrollPane = new ScrollPane();
         ProductList masterProductList = new ProductList();
         masterProductList.productList = new ArrayList<Product>();
-     masterProductList =  Main.readProductDataFile(masterProductList);
+        masterProductList =  Main.readProductDataFile(masterProductList);
         
         Button backButton = new Button("Return");
         manageProductPane.getChildren().add(backButton);
         backButton.setLayoutX(400);
-        backButton.setLayoutY(50);
+        backButton.setLayoutY(450);
         backButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
                   selection.setVisible(true);
-               //   manageProductPane.setVisible(false);
-               //   manageProductPane
+               manageProductPane.getChildren().removeAll();
             }
         });
+        
+        Pane pane = new Pane();
         
         for (int i = 0; i < masterProductList.productList.size(); i++) {
           System.out.println("Size: " + masterProductList.productList.size());
           System.out.println(i);
           System.out.println(     masterProductList.productList.get(i).getProductName());
                
-//        HBox hBoxOne = new HBox();
-//        VBox vboxLabel = new VBox();
-//        vboxLabel.setSpacing(10);
-//        
-//        Label lblProductCode = new Label("Product Code Bar");
-//        Label lblProductName = new Label("Name");
-//        Label lblProductPrice = new Label("Price");
-//        Label lblProductQuantity = new Label("Quantity");
-//        lblProductCode.setTextFill(Color.web("#bdc3c7"));
-//        lblProductName.setTextFill(Color.web("#bdc3c7"));
-//        lblProductPrice.setTextFill(Color.web("#bdc3c7"));
-//        lblProductQuantity.setTextFill(Color.web("#bdc3c7"));
-//        lblProductCode.setFont(Font.font("Abel",FontWeight.BOLD, 12));
-//        lblProductName.setFont(Font.font("Abel",FontWeight.BOLD, 12));
-//        lblProductPrice.setFont(Font.font("Abel",FontWeight.BOLD, 12));
-//        lblProductQuantity.setFont(Font.font("Abel",FontWeight.BOLD, 12));
-//        vboxLabel.getChildren().addAll(lblProductCode, lblProductName, lblProductPrice,lblProductQuantity);
-//
-//        VBox vboxTF = new VBox();
-//        TextField TFProductCode = new TextField("-");
-//        TextField TFProductName = new TextField("-");
-//        TextField TFProductPrice = new TextField("0");
-//        TextField TFProductQuantity = new TextField("0");
-//        TFProductCode.setAlignment(Pos.CENTER);
-//        TFProductName.setAlignment(Pos.CENTER);
-//        TFProductPrice.setAlignment(Pos.CENTER);
-//        TFProductQuantity.setAlignment(Pos.CENTER);
-//
-//        vboxTF.getChildren().addAll(TFProductCode, TFProductName, TFProductPrice,TFProductQuantity);
-//        hBoxOne.getChildren().addAll(vboxLabel,vboxTF);
-//        hBoxOne.setSpacing(25);
-//        hBoxOne.setMaxSize(350, 50);
-//        
-//        StackPane stackH1 = new StackPane();
-//        stackH1.getChildren().add(hBoxOne);
-//        stackH1.setStyle("-fx-background-color:#2c3e50;");
-//        stackH1.setStyle("-fx-background-color: #34495e;");
-//        stackH1.setLayoutX(250);
-//        stackH1.setLayoutY(50*(1+i));
-//        stackH1.setPrefSize(450, 100);
-//        stackH1.setAlignment(hBoxOne,Pos.CENTER);
-//        productScrollPane.getChildrenUnmodifiable().add(stackH1);
-//        manageProductPane.getChildren().add(productScrollPane);
+        HBox hBoxOne = new HBox();
+        VBox vboxLabel = new VBox();
+        vboxLabel.setSpacing(10);
+        
+        Label lblProductCode = new Label("Product Code Bar");
+        Label lblProductName = new Label("Name");
+        Label lblProductPrice = new Label("Price");
+        Label lblProductQuantity = new Label("Quantity");
+        lblProductCode.setTextFill(Color.web("#bdc3c7"));
+        lblProductName.setTextFill(Color.web("#bdc3c7"));
+        lblProductPrice.setTextFill(Color.web("#bdc3c7"));
+        lblProductQuantity.setTextFill(Color.web("#bdc3c7"));
+        lblProductCode.setFont(Font.font("Abel",FontWeight.BOLD, 12));
+        lblProductName.setFont(Font.font("Abel",FontWeight.BOLD, 12));
+        lblProductPrice.setFont(Font.font("Abel",FontWeight.BOLD, 12));
+        lblProductQuantity.setFont(Font.font("Abel",FontWeight.BOLD, 12));
+        vboxLabel.getChildren().addAll(lblProductCode, lblProductName, lblProductPrice,lblProductQuantity);
+
+        VBox vboxTF = new VBox();
+        TextField TFProductCode = new TextField("-");
+        TextField TFProductName = new TextField("-");
+        TextField TFProductPrice = new TextField("0");
+        TextField TFProductQuantity = new TextField("0");
+        TFProductCode.setAlignment(Pos.CENTER);
+        TFProductName.setAlignment(Pos.CENTER);
+        TFProductPrice.setAlignment(Pos.CENTER);
+        TFProductQuantity.setAlignment(Pos.CENTER);
+
+        vboxTF.getChildren().addAll(TFProductCode, TFProductName, TFProductPrice,TFProductQuantity);
+        hBoxOne.getChildren().addAll(vboxLabel,vboxTF);
+        hBoxOne.setSpacing(5);
+        hBoxOne.setMaxSize(450, 10);
+        
+        StackPane stackH1 = new StackPane();
+        stackH1.getChildren().add(hBoxOne);
+        stackH1.setStyle("-fx-background-color:#2c3e50;");
+        stackH1.setStyle("-fx-background-color: #34495e;");
+        stackH1.setLayoutX(450);
+      stackH1.setLayoutX(0);
+        stackH1.setLayoutY(115*(i)+10);
+     //   stackH1.setPrefSize(450, 100);
+        stackH1.setAlignment(hBoxOne,Pos.CENTER);
+        pane.getChildren().add(stackH1);
         }
+        
+        pane.setStyle("-fx-background-color:#2c3e50;");
+        productScrollPane.setContent(pane);
+        productScrollPane.setLayoutX(400);
+        manageProductPane.getChildren().add(productScrollPane);
+        
+        
+        
     }
     public void iniManageUser(Pane manageUserPane, Pane selection) {
         UserList userListMaster = new UserList();
@@ -360,9 +390,11 @@ public static String barcode;
        // System.out.println(event.getCode().toString());
     }
     
-    public void iniOperationPane(Pane paneOperation) {
+    public ArrayList<TextField> iniOperationPane(Pane paneOperation) {
         //misc label
         Label statut = new Label("Awaiting Input...");
+        
+        
         
         // l1 hbox
         HBox hBoxOne = new HBox();
@@ -475,6 +507,15 @@ public static String barcode;
         
         paneOperation.getChildren().add(stackIns);
         paneOperation.setStyle("-fx-background-color:#2c3e50;");
+        
+        ArrayList<TextField> TFList = new ArrayList<TextField>();
+        TFList.add(TFProductCode);
+        TFList.add(TFProductName);
+        TFList.add(TFProductPrice);
+        TFList.add(TFID);
+        TFList.add(TFName);
+        TFList.add(TFBalance);
+        return TFList;
     }
     public void iniStatisticPane() {
         
@@ -489,12 +530,13 @@ public static String barcode;
          StackPane loginStack = new StackPane();
          PasswordField passField = new PasswordField();
          passField.setAlignment(Pos.CENTER);
+         passField.setText("1");
          Label passLabel = new Label("Passcode");
          Button passBtn = new Button("Confirm");
          
-         passBtn.setTextFill(Color.web("#bdc3c7"));
-         passBtn.setFont(Font.font("Abel",FontWeight.BOLD, 12));
-         passBtn.setStyle("-fx-background-color: #2E4053;");
+         //passBtn.setTextFill(Color.web("#bdc3c7"));
+        // passBtn.setFont(Font.font("Abel",FontWeight.BOLD, 12));
+      //   passBtn.setStyle("-fx-background-color: #2E4053;");
          
          loginStack.setAlignment(Pos.CENTER);
          loginPane.setMaxSize(260, 150);

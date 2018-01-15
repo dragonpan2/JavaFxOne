@@ -41,7 +41,8 @@ public class Main {
         
         
     }
-    public static void readOperation(String barCode) {
+    public static ReadReturn readOperation(String barCode, int userIndice, int productIndice) {
+        ReadReturn readReturn = new ReadReturn();
         ProductList productListMaster = new ProductList();
         UserList userListMaster = new UserList();
         
@@ -51,11 +52,9 @@ public class Main {
         productListMaster = readProductDataFile(productListMaster);
         userListMaster = readUserDataFile(userListMaster);
         
-        int userIndice =0;
-        int productIndice = 0;
                 userIndice= userListMaster.lookUpUser(barCode);
                 productIndice = productListMaster.lookUpProduct(barCode);
-        if (userIndice != -1 && productIndice != -1) {
+        if (userIndice != -1 && productIndice == userIndice) {
             //major problem, barcode is in both database
         }
         if (userIndice != -1) {
@@ -63,10 +62,19 @@ public class Main {
             ///next is wait for product then do buy
         }
         else if (productIndice != -1) {
-            productListMaster.productList.get(productIndice);
+            
+            if (userIndice != -1 && productIndice != userIndice) {
+                double userBalance = userListMaster.userList.get(userIndice).getBalance();
+                int quantity = productListMaster.productList.get(productIndice).getQuantityLeft();
+                double itemPrice = productListMaster.productList.get(productIndice).getPrice();
+                
+                userListMaster.userList.get(userIndice).setBalance(userBalance-itemPrice);
+                productListMaster.productList.get(productIndice).setQuantityLeft(quantity-1);
+            }
             //then the barcode is in product data base
             ///next is diplay product information
         }
+        
         else {
             // barcode is not in any database
             /// next is ready for new operation
@@ -75,6 +83,8 @@ public class Main {
         ///saved all database
         writeUserDataFile(userListMaster);
         writeProdctDataFile(productListMaster);
+        
+        return readReturn;
     }
     public static void writeUserDataFile (UserList userListMaster) {
         try {
