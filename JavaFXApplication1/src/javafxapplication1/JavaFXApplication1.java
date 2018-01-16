@@ -107,12 +107,12 @@ public static String barcode;
 //                    TFList.add(TFName);
 //                    TFList.add(TFBalance);
                    String productCode = readReturn.productListMaster.productList.get(localProductIndice).getProductCode();
-                    TFList.get(1).setText(productCode);
-                    TFList.get(2).setText(productCode);
-                    TFList.get(3).setText(productCode);
-                    TFList.get(4).setText(productCode);
-                    TFList.get(5).setText(productCode);
-                    TFList.get(6).setText(productCode);
+//                    TFList.get(1).setText(productCode);
+//                    TFList.get(2).setText(productCode);
+//                    TFList.get(3).setText(productCode);
+//                    TFList.get(4).setText(productCode);
+//                    TFList.get(5).setText(productCode);
+//                    TFList.get(6).setText(productCode);
                    // updateTF(TFList, readReturn);
                     
                     paneOperation.getChildren();//
@@ -293,7 +293,7 @@ public static String barcode;
             @Override
             public void handle(ActionEvent event) {
                   selection.setVisible(true);
-               manageProductPane.getChildren().removeAll();
+               manageProductPane.getChildren().removeAll(backButton);
             }
         });
         
@@ -345,12 +345,15 @@ public static String barcode;
         stackH1.setLayoutX(450);
       stackH1.setLayoutX(0);
         stackH1.setLayoutY(115*(i)+10);
-     //   stackH1.setPrefSize(450, 100);
+       // stackH1.setMaxSize(450, 300);
         stackH1.setAlignment(hBoxOne,Pos.CENTER);
         pane.getChildren().add(stackH1);
         }
         
+        
+        
         pane.setStyle("-fx-background-color:#2c3e50;");
+        productScrollPane.setVmin(300);
         productScrollPane.setContent(pane);
         productScrollPane.setLayoutX(400);
         manageProductPane.getChildren().add(productScrollPane);
