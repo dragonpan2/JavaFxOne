@@ -5,6 +5,7 @@
  */
 package javafxapplication1;
 
+import com.sun.xml.internal.ws.runtime.config.TubeFactoryList;
 import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -46,7 +47,7 @@ public static String barcode;
         Pane paneOperation = new Pane();
         Pane paneAdmin = new Pane();
         
-        ArrayList<TextField> TFList = new ArrayList();
+      final  ArrayList<TextField> TFList;
         
         int userIndice = -1;
         int productIndice = -1;
@@ -96,7 +97,7 @@ public static String barcode;
                     System.out.println(barcode);
                     ReadReturn readReturn= Main.readOperation(barcode, userIndice, productIndice);
                     //par two
-                    //
+                    
 
                   int  localUserIndice = readReturn.productIndice;
                   int  localProductIndice = readReturn.productIndice;
@@ -106,14 +107,21 @@ public static String barcode;
 //                    TFList.add(TFID);
 //                    TFList.add(TFName);
 //                    TFList.add(TFBalance);
-                   String productCode = readReturn.productListMaster.productList.get(localProductIndice).getProductCode();
+                  final  String  productCode = readReturn.productListMaster.productList.get(localProductIndice).getProductCode();
+                  final  String  produceName = readReturn.productListMaster.productList.get(localProductIndice).getProductName();
+                  final  String  productPrice = Double.toString(readReturn.productListMaster.productList.get(localProductIndice).getPrice());
+                  
+                  final  String  userID = readReturn.userListMaster.userList.get(localUserIndice).getCardId();
+                  final  String  userName = readReturn.userListMaster.userList.get(localUserIndice).getUsername();
+                  final  String  UserBalance = Double.toString(readReturn.userListMaster.userList.get(localUserIndice).getBalance());
+                  
                     TFList.get(1).setText(productCode);
-                    TFList.get(2).setText(productCode);
-                    TFList.get(3).setText(productCode);
-                    TFList.get(4).setText(productCode);
-                    TFList.get(5).setText(productCode);
-                    TFList.get(6).setText(productCode);
-                   // updateTF(TFList, readReturn);
+                    TFList.get(2).setText(produceName);
+                    TFList.get(3).setText(productPrice);
+                    
+                    TFList.get(4).setText(userID);
+                    TFList.get(5).setText(userName);
+                    TFList.get(6).setText(UserBalance);
                     
                     paneOperation.getChildren();//
                }
