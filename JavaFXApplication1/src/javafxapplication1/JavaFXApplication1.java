@@ -76,7 +76,7 @@ public static String barcode;
         //-----------------------------
       TFList =   iniOperationPane(paneOperation);
       //par one
-        iniAdminPane(paneAdmin);
+         iniAdminPane(paneAdmin);
         
         tabOperation.setContent(paneOperation);
         tabManagement.setContent(paneAdmin);
@@ -96,6 +96,25 @@ public static String barcode;
                     System.out.println(barcode);
                     ReadReturn readReturn= Main.readOperation(barcode, userIndice, productIndice);
                     //par two
+                    //
+
+                  int  localUserIndice = readReturn.productIndice;
+                  int  localProductIndice = readReturn.productIndice;
+//                    TFList.add(TFProductCode);
+//                    TFList.add(TFProductName);
+//                    TFList.add(TFProductPrice);
+//                    TFList.add(TFID);
+//                    TFList.add(TFName);
+//                    TFList.add(TFBalance);
+                   String productCode = readReturn.productListMaster.productList.get(localProductIndice).getProductCode();
+                    TFList.get(1).setText(productCode);
+                    TFList.get(2).setText(productCode);
+                    TFList.get(3).setText(productCode);
+                    TFList.get(4).setText(productCode);
+                    TFList.get(5).setText(productCode);
+                    TFList.get(6).setText(productCode);
+                   // updateTF(TFList, readReturn);
+                    
                     paneOperation.getChildren();//
                }
                 else {
@@ -305,6 +324,7 @@ public static String barcode;
 
         VBox vboxTF = new VBox();
         TextField TFProductCode = new TextField("-");
+        TFProductCode.setText(masterProductList.productList.get(i).getProductCode());
         TextField TFProductName = new TextField("-");
         TextField TFProductPrice = new TextField("0");
         TextField TFProductQuantity = new TextField("0");
@@ -686,6 +706,24 @@ public static String barcode;
                         
                     }
         return number;
+    }
+    
+    public void updateTF(ArrayList<TextField> TFList, ReadReturn readReturn) {
+        int  localUserIndice = readReturn.productIndice;
+                  int  localProductIndice = readReturn.productIndice;
+//                    TFList.add(TFProductCode);
+//                    TFList.add(TFProductName);
+//                    TFList.add(TFProductPrice);
+//                    TFList.add(TFID);
+//                    TFList.add(TFName);
+//                    TFList.add(TFBalance);
+                   String productCode = readReturn.productListMaster.productList.get(localProductIndice).getProductCode();
+                    TFList.get(1).setText(productCode);
+                    TFList.get(2).setText(productCode);
+                    TFList.get(3).setText(productCode);
+                    TFList.get(4).setText(productCode);
+                    TFList.get(5).setText(productCode);
+                    TFList.get(6).setText(productCode);
     }
     
 
