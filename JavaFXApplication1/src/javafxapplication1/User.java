@@ -5,11 +5,13 @@
  */
 package javafxapplication1;
 
+import java.io.Serializable;
+
 /**
  *
  * @author panbe
  */
-public class User {
+public class User implements Serializable {
     private String cardId;
     private String username;
     private double balance;

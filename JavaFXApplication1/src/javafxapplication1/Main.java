@@ -52,8 +52,14 @@ public class Main {
         productListMaster = readProductDataFile(productListMaster);
         userListMaster = readUserDataFile(userListMaster);
         
+                System.out.println("Calling lookUpUser");
                 userIndice= userListMaster.lookUpUser(barCode);
+                System.out.println("lookUpUser called");
                 productIndice = productListMaster.lookUpProduct(barCode);
+                
+                readReturn.productIndice = productIndice;
+                readReturn.userIndice = userIndice;
+                
         if (userIndice != -1 && productIndice == userIndice) {
             //major problem, barcode is in both database
         }
@@ -83,12 +89,16 @@ public class Main {
         ///saved all database
         writeUserDataFile(userListMaster);
         writeProdctDataFile(productListMaster);
+        readReturn.productListMaster = productListMaster;
+        readReturn.userListMaster = userListMaster;
+        readReturn.productIndice = productIndice;
+        readReturn.userIndice = userIndice;
         
         return readReturn;
     }
     public static void writeUserDataFile (UserList userListMaster) {
+        System.out.println("Writing UserData");
         try {
-            
         FileOutputStream fileOut = new FileOutputStream("userData.txt");
         ObjectOutputStream out = new ObjectOutputStream(fileOut);
         out.writeObject(userListMaster);
@@ -97,12 +107,13 @@ public class Main {
         }
         
         catch (IOException i) {
-            
+            i.printStackTrace();
             System.out.println("Exception");
         }
+        System.out.println("UserData Written");
     }
     public static void writeProdctDataFile (ProductList productListMaster) {
-        System.out.println("Writing File");
+        System.out.println("Writing ProductData");
         try {
         FileOutputStream fileOut = new FileOutputStream("productData.txt");
         ObjectOutputStream out = new ObjectOutputStream(fileOut);
@@ -115,10 +126,10 @@ public class Main {
             i.printStackTrace();
             System.out.println("Exception");
         }
-        System.out.println("File Writed");
+        System.out.println("ProductData Written");
     }
     public static ProductList readProductDataFile(ProductList productListMaster) {
-        System.out.println("Reading File");
+        System.out.println("Reading ProductList");
         try {
         FileInputStream fileIn = new FileInputStream("productData.txt");
         ObjectInputStream in = new ObjectInputStream(fileIn);
@@ -133,11 +144,11 @@ public class Main {
             i.printStackTrace();
             System.out.println("Exception");
         }
-        System.out.println("File Read");
-       // System.out.println(productListMaster.productList.get(0).getProductCode());
+        System.out.println("ProductList Read");
         return productListMaster;
     }
     public static UserList readUserDataFile(UserList userListMaster) {
+        System.out.println("Reading UserList");
         try {
         FileInputStream fileIn = new FileInputStream("userData.txt");
         ObjectInputStream in = new ObjectInputStream(fileIn);
@@ -151,6 +162,7 @@ public class Main {
         catch (IOException i) {
             System.out.println("Exception");
         }
+        System.out.println("UserList Read");
         return userListMaster;
     }
     public static void addNewProduct(ProductList productListMaster, String productCode, String productName, double price, int quantityToAdd) {

@@ -46,7 +46,7 @@ public static String barcode;
         Pane paneOperation = new Pane();
         Pane paneAdmin = new Pane();
         
-        ArrayList<TextField> TFList = new ArrayList();
+       final ArrayList<TextField> TFList;
         
         int userIndice = -1;
         int productIndice = -1;
@@ -74,7 +74,7 @@ public static String barcode;
             }
         });
         //-----------------------------
-      TFList =   iniOperationPane(paneOperation);
+      TFList = iniOperationPane(paneOperation);
       //par one
          iniAdminPane(paneAdmin);
         
@@ -96,9 +96,7 @@ public static String barcode;
                     System.out.println(barcode);
                     ReadReturn readReturn= Main.readOperation(barcode, userIndice, productIndice);
                     //par two
-                    //
-
-                  int  localUserIndice = readReturn.productIndice;
+                  int  localUserIndice = readReturn.userIndice;
                   int  localProductIndice = readReturn.productIndice;
 //                    TFList.add(TFProductCode);
 //                    TFList.add(TFProductName);
@@ -106,16 +104,27 @@ public static String barcode;
 //                    TFList.add(TFID);
 //                    TFList.add(TFName);
 //                    TFList.add(TFBalance);
-                   String productCode = readReturn.productListMaster.productList.get(localProductIndice).getProductCode();
-//                    TFList.get(1).setText(productCode);
-//                    TFList.get(2).setText(productCode);
-//                    TFList.get(3).setText(productCode);
-//                    TFList.get(4).setText(productCode);
-//                    TFList.get(5).setText(productCode);
-//                    TFList.get(6).setText(productCode);
-                   // updateTF(TFList, readReturn);
+                    System.out.println(localProductIndice+" localProductIndice");
+                    System.out.println(localUserIndice + " localUserIndice");
+                  if (readReturn.productIndice != -1) {
+                  final  String  productCode = readReturn.productListMaster.productList.get(localProductIndice).getProductCode();
+                  final  String  produceName = readReturn.productListMaster.productList.get(localProductIndice).getProductName();
+                  final  String  productPrice = Double.toString(readReturn.productListMaster.productList.get(localProductIndice).getPrice());
+                  TFList.get(0).setText(productCode);
+                  TFList.get(1).setText(produceName);
+                  TFList.get(2).setText(productPrice);
+                  }
+                  if (readReturn.userIndice != -1) {
+                  final  String  userID = readReturn.userListMaster.userList.get(localUserIndice).getCardId();
+                  final  String  userName = readReturn.userListMaster.userList.get(localUserIndice).getUsername();
+                  final  String  UserBalance = Double.toString(readReturn.userListMaster.userList.get(localUserIndice).getBalance());
+                  
+                  TFList.get(3).setText(userID);
+                  TFList.get(4).setText(userName);
+                  TFList.get(5).setText(UserBalance);
+                  }
+                   
                     
-                    paneOperation.getChildren();//
                }
                 else {
                     number = digitConverter(event.getCode().toString());
@@ -255,15 +264,14 @@ public static String barcode;
         createButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-              //  Main.firstTimeProtocol();
             UserList userListMaster = new UserList();
             userListMaster.userList = new ArrayList<User>();
-            Main.readUserDataFile(userListMaster);
+            userListMaster = Main.readUserDataFile(userListMaster);
             User user = new User();
             
             user.setCardId(TFUserID.getText());
             user.setUsername(TFUserName.getText());
-            user.setBalance(Integer.parseInt(TFUserFund.getText())); //careful now
+            user.setBalance(Double.parseDouble(TFUserFund.getText())); //careful now
             userListMaster.userList.add(user);
             Main.writeUserDataFile(userListMaster);
             }
@@ -324,6 +332,7 @@ public static String barcode;
 
         VBox vboxTF = new VBox();
         TextField TFProductCode = new TextField("-");
+        
         TFProductCode.setText(masterProductList.productList.get(i).getProductCode());
         TextField TFProductName = new TextField("-");
         TextField TFProductPrice = new TextField("0");

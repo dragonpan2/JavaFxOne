@@ -51,3 +51,4 @@ JavaFXApplication1/build/classes/javafxapplication1/JavaFXApplication1.class
 JavaFXApplication1/dist/JavaFXApplication1.html
 JavaFXApplication1/dist/JavaFXApplication1.jar
 JavaFXApplication1/dist/JavaFXApplication1.jnlp
+*.class
