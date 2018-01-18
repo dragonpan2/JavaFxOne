@@ -52,9 +52,7 @@ public class Main {
         productListMaster = readProductDataFile(productListMaster);
         userListMaster = readUserDataFile(userListMaster);
         
-                System.out.println("Calling lookUpUser");
                 userIndice= userListMaster.lookUpUser(barCode);
-                System.out.println("lookUpUser called");
                 productIndice = productListMaster.lookUpProduct(barCode);
                 
                 readReturn.productIndice = productIndice;
