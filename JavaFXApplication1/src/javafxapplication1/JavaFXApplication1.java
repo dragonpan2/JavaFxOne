@@ -42,6 +42,13 @@ public class JavaFXApplication1 extends Application implements EventHandler<KeyE
 
     public static String barcode;
 
+//    static Timer Globaltimer = new Timer();
+//    static TimerTask timerTask = new TimerTask() {
+//            public void run() {
+//                
+//            }
+//        };
+    
     @Override
     public void start(Stage primaryStage) {
         Button btnTest = new Button();
@@ -118,6 +125,16 @@ public class JavaFXApplication1 extends Application implements EventHandler<KeyE
                         TFList.get(1).setText(produceName);
                         TFList.get(2).setText(productPrice);
                     }
+//                    if (readReturn.productIndice == -1) {
+//                        TFList.get(0).setText("");
+//                        TFList.get(1).setText("");
+//                        TFList.get(2).setText("");
+//                    }
+//                    if (readReturn.userIndice == -1) {
+//                        TFList.get(3).setText("");
+//                        TFList.get(4).setText("");
+//                        TFList.get(5).setText("");
+//                    }
                     if (readReturn.userIndice != -1) {
                         final String userID = readReturn.userListMaster.userList.get(localUserIndice).getCardId();
                         final String userName = readReturn.userListMaster.userList.get(localUserIndice).getUsername();
