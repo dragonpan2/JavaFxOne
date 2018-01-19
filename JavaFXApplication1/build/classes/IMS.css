@@ -10,7 +10,9 @@
     -fx-font-family: 'Abel', FontWeight, 12;
     -fx-font-weight: bold;
 }
-
+.ScrollPane{
+    -fx-background-color: #34495e;
+}
 .tab-pane .tab-header-area .tab-header-background {
     -fx-opacity: 0;
 }

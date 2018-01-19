@@ -17,6 +17,9 @@ import java.util.ArrayList;
  * @author panbe
  */
 public class Main {
+    private static String previousType = "null";
+    private static int previousUserIndice = -1;
+    private static int previousProductIndice = -1;
     public void MainMethod() {
         
         
@@ -24,17 +27,7 @@ public class Main {
     }
     
     public void buyOperation() {
-//        readUserDataFile(userListMaster);
-//        readProductDataFile(productListMaster);
-//        
-//        productListMaster.productList.get(1);
-//        //userListMaster.userList.get(1).buyProduct();
-//        
-//        userListMaster.lookUpUser(null);
-//        productListMaster.lookUpProduct(null);
-//        
-//        writeUserDataFile(userListMaster);
-//        writeProdctDataFile(productListMaster);
+
     }
     public void userProductLookup(String barcode) {
         
@@ -58,28 +51,67 @@ public class Main {
                 readReturn.productIndice = productIndice;
                 readReturn.userIndice = userIndice;
                 
-        if (userIndice != -1 && productIndice == userIndice) {
+                System.out.println("ReadOperation Debut:");
+                System.out.println("PreviousType: "+previousType);
+                System.out.println("PreviousProductIndice: " +previousProductIndice);
+                System.out.println("PreviousUserIndice: " +previousUserIndice);
+                System.out.println("ProductIndice: "+productIndice);
+                System.out.println("UserIndice: " +userIndice);
+                System.out.println("---------------------");
+                
+        if (userIndice != -1 && productIndice != -1) {
+            previousType = "both";
             //major problem, barcode is in both database
+            previousProductIndice = -1;
+            previousUserIndice = -1;
         }
-        if (userIndice != -1) {
-            //then it's a user lookup
-            ///next is wait for product then do buy
+        else if (productIndice != -1 && !previousType.equals("user")) {
+            //just a product scan
+            previousType = "product";
+            previousProductIndice = productIndice;
+            previousUserIndice = -1;
         }
-        else if (productIndice != -1) {
+        else if (productIndice != -1 && previousType.equals("user")) {
+            //buying product
+            previousType = "null";
+            previousProductIndice = -1;
+            previousUserIndice = -1;
             
-            if (userIndice != -1 && productIndice != userIndice) {
+            System.out.println("Buying product");
                 double userBalance = userListMaster.userList.get(userIndice).getBalance();
                 int quantity = productListMaster.productList.get(productIndice).getQuantityLeft();
                 double itemPrice = productListMaster.productList.get(productIndice).getPrice();
                 
                 userListMaster.userList.get(userIndice).setBalance(userBalance-itemPrice);
                 productListMaster.productList.get(productIndice).setQuantityLeft(quantity-1);
-            }
-            //then the barcode is in product data base
-            ///next is diplay product information
+                        
+        }
+        else if (userIndice != -1 && !previousType.equals("product")) {
+            //
+            previousType = "user";
+            previousProductIndice = -1;
+            previousUserIndice = userIndice;
+            System.out.println("userIndice != -1 && !previousType.equals(\"product\")");
+        }
+        else if (userIndice != -1 && previousType.equals("product")) {
+            //then it's a user lookup
+            ///next is wait for product then do buy
+            previousType = "user";
+            previousProductIndice = -1;
+            previousUserIndice = userIndice;
+
+        }
+        
+        if (productIndice == -1 && userIndice != -1) {
+            previousType = "null";
+            previousProductIndice = -1;
+            previousUserIndice = -1;
         }
         
         else {
+            previousProductIndice = -1;
+            previousUserIndice = -1;
+            previousType = "null";
             // barcode is not in any database
             /// next is ready for new operation
         }
@@ -89,8 +121,8 @@ public class Main {
         writeProdctDataFile(productListMaster);
         readReturn.productListMaster = productListMaster;
         readReturn.userListMaster = userListMaster;
-        readReturn.productIndice = productIndice;
-        readReturn.userIndice = userIndice;
+        //readReturn.productIndice = productIndice;
+        //readReturn.userIndice = userIndice;
         
         return readReturn;
     }

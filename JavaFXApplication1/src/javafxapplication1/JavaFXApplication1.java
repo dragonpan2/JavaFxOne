@@ -32,6 +32,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
+import sun.awt.FontConfiguration;
 
 /**
  *
@@ -95,10 +96,12 @@ public class JavaFXApplication1 extends Application implements EventHandler<KeyE
                 if (event.getCode().toString().equals("ENTER")) {
                     barcode = keyConsume(keyCodebarList);
                     System.out.println(barcode);
+                    
                     ReadReturn readReturn = Main.readOperation(barcode, userIndice, productIndice);
                     //par two
                     int localUserIndice = readReturn.userIndice;
                     int localProductIndice = readReturn.productIndice;
+                    
 //                    TFList.add(TFProductCode);
 //                    TFList.add(TFProductName);
 //                    TFList.add(TFProductPrice);
@@ -129,6 +132,7 @@ public class JavaFXApplication1 extends Application implements EventHandler<KeyE
                     number = digitConverter(event.getCode().toString());
                     keyAddtoList(keyCodebarList, number);
                 }
+                
                 System.out.println(event.getCode().toString());
             }
         });
@@ -325,6 +329,7 @@ public class JavaFXApplication1 extends Application implements EventHandler<KeyE
             @Override
             public void handle(ActionEvent event) {
                 selection.setVisible(true);
+                manageProductPane.getChildren().remove(saveButton);
                 manageProductPane.getChildren().remove(productScrollPane);
                 manageProductPane.getChildren().remove(backButton);
             }
@@ -332,6 +337,7 @@ public class JavaFXApplication1 extends Application implements EventHandler<KeyE
 
         VBox vBox = new VBox(); 
         vBox.setSpacing(8);
+        vBox.setStyle("-fx-background-color: #34495e;");
         
         for (int i = 0; i < masterProductList.productList.size(); i++) {
             System.out.println("Size: " + masterProductList.productList.size());
@@ -345,32 +351,64 @@ public class JavaFXApplication1 extends Application implements EventHandler<KeyE
             Label lblProductPrice = new Label("Price");
             Label lblProductQuantity = new Label("Quantity");
             
-            TextField TFPCode = new TextField();
-            TextField TFPCode = new TextField();
-            TextField TFPCode = new TextField();
-            TextField TFPCode = new TextField();
+            //TF textfield, P print
+            TextField TFPCode = new TextField(masterProductList.productList.get(i).getProductCode());
+            TextField TFPName = new TextField(masterProductList.productList.get(i).getProductName());
+            TextField TFPPrice = new TextField(Double.toString(masterProductList.productList.get(i).getPrice()));
+            TextField TFPQuantity = new TextField(Integer.toString(masterProductList.productList.get(i).getQuantityLeft()));
+            
+            TextField TFCode = new TextField(masterProductList.productList.get(i).getProductCode());
+            TextField TFName = new TextField(masterProductList.productList.get(i).getProductName());
+            TextField TFPrice = new TextField(Double.toString(masterProductList.productList.get(i).getPrice()));
+            TextField TFQuantity = new TextField(Integer.toString(masterProductList.productList.get(i).getQuantityLeft()));
+            
+            TFPCode.setEditable(false);
+            TFPName.setEditable(false);
+            TFPPrice.setEditable(false);
+            TFPQuantity.setEditable(false);
+            TFPCode.setAlignment(Pos.CENTER);
+            TFPName.setAlignment(Pos.CENTER);
+            TFPPrice.setAlignment(Pos.CENTER);
+            TFPQuantity.setAlignment(Pos.CENTER);
+            
+            TFPCode.setStyle("-fx-text-inner-color: green;");
+            TFPName.setStyle("-fx-text-inner-color: green;");
+            TFPPrice.setStyle("-fx-text-inner-color: green;");
+            TFPQuantity.setStyle("-fx-text-inner-color: green;");
+            
+            TFPCode.setFont(Font.font("Abel", FontWeight.BOLD, 12));
+            TFPName.setFont(Font.font("Abel", FontWeight.BOLD, 12));
+            TFPPrice.setFont(Font.font("Abel", FontWeight.BOLD, 12));
+            TFPQuantity.setFont(Font.font("Abel", FontWeight.BOLD, 12));
+            
+            SaveReturnProduct saveReturn = new SaveReturnProduct();
+            saveReturn.productCode = TFCode;
+            saveReturn.productName = TFName;
+            saveReturn.price = TFPrice;
+            saveReturn.quantityLeft = TFQuantity;
+            saveReturnList.add(saveReturn);
             
             gridPane.add(lblProductCode, 0, 0);
             gridPane.add(lblProductName, 0, 1);
             gridPane.add(lblProductPrice, 0, 2);
             gridPane.add(lblProductQuantity, 0, 3);
             
-            gridPane.add(TFPCardID, 1, 0);
-            gridPane.add(TFPUserName, 1, 1);
-            gridPane.add(TFPBalance, 1, 2);
-            gridPane.add(TFPEmail, 1, 3);
+            gridPane.add(TFPCode, 1, 0);
+            gridPane.add(TFPName, 1, 1);
+            gridPane.add(TFPPrice, 1, 2);
+            gridPane.add(TFPQuantity, 1, 3);
             
-            gridPane.add(TFCardID, 2, 0);
-            gridPane.add(TFUserName, 2, 1);
-            gridPane.add(TFBalance, 2, 2);
-            gridPane.add(TFEmail, 2, 3);
+            gridPane.add(TFCode, 2, 0);
+            gridPane.add(TFName, 2, 1);
+            gridPane.add(TFPrice, 2, 2);
+            gridPane.add(TFQuantity, 2, 3);
             vBox.getChildren().add(gridPane);
         }
 
-        pane.setStyle("-fx-background-color:#2c3e50;");
         productScrollPane.setMaxSize(500, 400);
         productScrollPane.setContent(vBox);
-        productScrollPane.setLayoutX(400);
+        productScrollPane.setLayoutX(275);
+        productScrollPane.setLayoutY(50);
         manageProductPane.getChildren().add(productScrollPane);
 
         long newCurrentTime = System.currentTimeMillis();
@@ -385,15 +423,15 @@ public class JavaFXApplication1 extends Application implements EventHandler<KeyE
         
         ScrollPane scrollPane = new ScrollPane();
         scrollPane.setVbarPolicy(ScrollBarPolicy.ALWAYS);
-        scrollPane.setMaxSize(600, 400);
-        scrollPane.setMinSize(600, 400);
-        scrollPane.setLayoutX(250);
+        scrollPane.setMaxSize(400, 400);
+        scrollPane.setMinSize(400, 400);
+        scrollPane.setLayoutX(275);
         scrollPane.setLayoutY(50);
         // todo add this
         
         VBox vBox = new VBox();
         vBox.setSpacing(8);
-        
+        vBox.setStyle("-fx-background-color: #34495e;");
         scrollPane.setContent(vBox);
         
         UserList userListMaster = new UserList();
