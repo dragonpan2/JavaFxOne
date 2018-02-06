@@ -38,6 +38,9 @@ public class Main {
         ReadReturn readReturn = new ReadReturn();
         ProductList productListMaster = new ProductList();
         UserList userListMaster = new UserList();
+        
+        boolean whipeUserReturn = false;
+        boolean whipeProductReturn = false;
 
         userListMaster.userList = new ArrayList<User>();
         productListMaster.productList = new ArrayList<Product>();
@@ -112,6 +115,17 @@ public class Main {
             /// next is ready for new operation
         }
 
+        
+        ///
+        if (whipeProductReturn) {
+            whipeProductReturn = false;
+            
+        }
+        if (whipeUserReturn) {
+            whipeUserReturn = false;
+        }
+        
+        
         ///saved all database
         writeUserDataFile(userListMaster);
         writeProdctDataFile(productListMaster);

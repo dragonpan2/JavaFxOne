@@ -15,11 +15,13 @@ public class User implements Serializable {
     private String cardId;
     private String username;
     private double balance;
+    private String email;
 
-    public User(String cardId, String username, double balance) {
+    public User(String cardId, String username, double balance, String email) {
         this.cardId = cardId;
         this.username = username;
         this.balance = balance;
+        this.email=email;
     }
 
     public User() {
@@ -52,6 +54,14 @@ public class User implements Serializable {
 
     public void setBalance(double balance) {
         this.balance = balance;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
     
     
