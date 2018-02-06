@@ -42,7 +42,8 @@ import sun.awt.FontConfiguration;
 public class JavaFXApplication1 extends Application implements EventHandler<KeyEvent> {
 
     public static String barcode;
-
+    public static OperationObject operationObject = new OperationObject(); //reset 
+    
 //    static Timer Globaltimer = new Timer();
 //    static TimerTask timerTask = new TimerTask() {
 //            public void run() {
@@ -322,6 +323,12 @@ public class JavaFXApplication1 extends Application implements EventHandler<KeyE
         manageProductPane.getChildren().add(saveButton);
         saveButton.setLayoutX(450);
         saveButton.setLayoutY(550);
+        
+        Button backButton = new Button("Return");
+        manageProductPane.getChildren().add(backButton);
+        backButton.setLayoutX(400);
+        backButton.setLayoutY(550);
+        
         saveButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
@@ -340,13 +347,15 @@ public class JavaFXApplication1 extends Application implements EventHandler<KeyE
                 
                 
                 Main.writeProdctDataFile(productListMaster);
+                manageProductPane.getChildren().remove(saveButton);
+                manageProductPane.getChildren().remove(productScrollPane);
+                manageProductPane.getChildren().remove(backButton);
+                iniManageProduct(manageProductPane, selection);
             }
+           
         });
         
-        Button backButton = new Button("Return");
-        manageProductPane.getChildren().add(backButton);
-        backButton.setLayoutX(400);
-        backButton.setLayoutY(550);
+        
         backButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
@@ -464,6 +473,12 @@ public class JavaFXApplication1 extends Application implements EventHandler<KeyE
         manageUserPane.getChildren().add(saveButton);
         saveButton.setLayoutX(450);
         saveButton.setLayoutY(550);
+        
+        Button backButton = new Button("Return");
+        manageUserPane.getChildren().add(backButton);
+        backButton.setLayoutX(400);
+        backButton.setLayoutY(550);
+        
         saveButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
@@ -484,13 +499,12 @@ public class JavaFXApplication1 extends Application implements EventHandler<KeyE
                 
                 
                 Main.writeUserDataFile(userListMaster);
+                 manageUserPane.getChildren().removeAll(saveButton,backButton,scrollPane);
+                  iniManageUser(manageUserPane, selection);
             }
         });
         
-        Button backButton = new Button("Return");
-        manageUserPane.getChildren().add(backButton);
-        backButton.setLayoutX(400);
-        backButton.setLayoutY(550);
+        
         backButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
@@ -598,6 +612,20 @@ public class JavaFXApplication1 extends Application implements EventHandler<KeyE
     }
 
     public ArrayList<TextField> iniOperationPane(Pane paneOperation) {
+        
+        TextField TFProductCode;
+        TextField TFProductName;
+        TextField TFProductPrice;
+        TextField TFID;
+        TextField TFName;
+        TextField TFBalance;
+        
+        TFProductCode = operationObject.TFProductCode;
+        TFProductName = operationObject.TFProductName;
+        TFProductPrice = operationObject.TFProductPrice;
+        TFID             = operationObject.TFID;
+        TFName        = operationObject.TFName;
+        TFBalance        =operationObject.TFBalance;
         //misc label
         Label statut = new Label("Awaiting Input...");
 
@@ -619,9 +647,7 @@ public class JavaFXApplication1 extends Application implements EventHandler<KeyE
         //-------------------------------
         //VBox ScanValue  product
         VBox vboxTF = new VBox();
-        TextField TFProductCode = new TextField("-");
-        TextField TFProductName = new TextField("-");
-        TextField TFProductPrice = new TextField("0");
+        
         TFProductCode.setAlignment(Pos.CENTER);
         TFProductName.setAlignment(Pos.CENTER);
         TFProductPrice.setAlignment(Pos.CENTER);
@@ -660,9 +686,7 @@ public class JavaFXApplication1 extends Application implements EventHandler<KeyE
 
         //TF2
         VBox vboxTF2 = new VBox();
-        TextField TFID = new TextField("-");
-        TextField TFName = new TextField("-");
-        TextField TFBalance = new TextField("0");
+        
         TFID.setEditable(false);
         TFName.setEditable(false);
         TFBalance.setEditable(false);
