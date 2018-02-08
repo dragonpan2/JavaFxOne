@@ -33,7 +33,7 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
 import javafx.scene.image.Image;
-import sun.awt.FontConfiguration;
+import javafx.scene.media.AudioClip;
 
 /**
  *
@@ -97,12 +97,12 @@ public class JavaFXApplication1 extends Application implements EventHandler<KeyE
                     System.out.println(localProductIndice + " localProductIndice");
                     System.out.println(localUserIndice + " localUserIndice");
                     if (readReturn.productIndice == -1 && readReturn.userIndice == -1) {
-                        TFList.get(0).setText("");
-                        TFList.get(1).setText("");
-                        TFList.get(2).setText("");
-                        TFList.get(3).setText("");
-                        TFList.get(4).setText("");
-                        TFList.get(5).setText("");
+                        TFList.get(0).setText("0");
+                        TFList.get(1).setText("-");
+                        TFList.get(2).setText("0.0");
+                        TFList.get(3).setText("0");
+                        TFList.get(4).setText("-");
+                        TFList.get(5).setText("0.0");
                     }
                     if (readReturn.productIndice != -1) {
                         final String productCode = readReturn.productListMaster.productList.get(localProductIndice).getProductCode();
@@ -193,11 +193,11 @@ public class JavaFXApplication1 extends Application implements EventHandler<KeyE
         Button backButton = new Button("Return to previous menu");
 
         createButton.setLayoutX(100);
-        createButton.setLayoutY(250);
+        createButton.setLayoutY(200);
         createButton.setStyle("-fx-background-color: #34495e;");
         backButton.setStyle("-fx-background-color: #34495e;");
         backButton.setLayoutX(100);
-        backButton.setLayoutY(200);
+        backButton.setLayoutY(235);
         newProductPane.getChildren().addAll(newProductGrid, createButton, backButton);
 
         createButton.setOnAction(new EventHandler<ActionEvent>() {
@@ -630,8 +630,6 @@ public class JavaFXApplication1 extends Application implements EventHandler<KeyE
         TFID = operationObject.TFID;
         TFName = operationObject.TFName;
         TFBalance = operationObject.TFBalance;
-        //misc label
-        Label statut = new Label("Awaiting Input...");
 
         // l1 hbox
         HBox hBoxOne = new HBox();

@@ -14,6 +14,8 @@ public class ReadReturn {
     int productIndice;
     UserList userListMaster = new UserList();
     ProductList productListMaster = new ProductList();
+    boolean whipUser = false;
+    boolean whipProduct = false;
 
     public ReadReturn() {
     }

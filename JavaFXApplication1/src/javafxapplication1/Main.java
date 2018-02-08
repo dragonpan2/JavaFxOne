@@ -5,16 +5,18 @@
  */
 package javafxapplication1;
 
+import javafx.scene.media.AudioClip;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
 import javafx.application.Platform;
-import javafx.scene.control.TextField;
+
 
 /**
  *
@@ -25,6 +27,7 @@ public class Main {
     private static String previousType = "null";
     private static int previousUserIndice = -1;
     private static int previousProductIndice = -1;
+    
 
     public void MainMethod() {
 
@@ -66,12 +69,13 @@ public class Main {
         System.out.println("UserIndice: " + userIndice);
         System.out.println("---------------------");
         
-        if ((userIndice == 0 || productIndice == 0) && productIndice!=userIndice) {
-            previousProductIndice = -1;
-            previousUserIndice = -1;
-            readReturn.productIndice = -1;
-            readReturn.userIndice  = -1;
-        }
+//        if ((userIndice == 0 || productIndice == 0) && productIndice!=userIndice && previousType .equals("product")) {
+//            previousProductIndice = -1;
+//            previousUserIndice = userIndice;
+//            readReturn.productIndice = -1;
+//            readReturn.userIndice  = userIndice;
+//            previousType = "user";
+//        }
         if (userIndice != -1 && productIndice != -1) {
             previousType = "both";
             //major problem, barcode is in both database
@@ -113,6 +117,11 @@ public class Main {
             JavaFXApplication1.newBalanceData.setText(Double.toString(userBalance - itemPrice));
             JavaFXApplication1.oldBalanceData.setText(Double.toString(userBalance));
             ///
+            
+            
+            playSound("checkout.wav");
+           
+            
              Timer timer = new Timer();
              TimerTask timerTask = new TimerTask() {
         @Override
@@ -294,5 +303,14 @@ public class Main {
             System.out.println("Exception");
         }
         System.out.println("Done");
+    }
+    public static  void playSound(String file) {
+        
+        if (file.equals("checkout.wav")) {
+         //    AudioClip note = new AudioClip(this.getClass().getResource("checkout.wav").toString());
+            URL resource = Main.class.getResource("checkout.wav");
+            AudioClip note = new AudioClip(resource.toString());
+            note.play();
+        }
     }
 }
