@@ -11,6 +11,10 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
+import java.util.Timer;
+import java.util.TimerTask;
+import javafx.application.Platform;
+import javafx.scene.control.TextField;
 
 /**
  *
@@ -38,7 +42,7 @@ public class Main {
         ReadReturn readReturn = new ReadReturn();
         ProductList productListMaster = new ProductList();
         UserList userListMaster = new UserList();
-        
+
         boolean whipeUserReturn = false;
         boolean whipeProductReturn = false;
 
@@ -61,19 +65,34 @@ public class Main {
         System.out.println("ProductIndice: " + productIndice);
         System.out.println("UserIndice: " + userIndice);
         System.out.println("---------------------");
-
+        
+        if ((userIndice == 0 || productIndice == 0) && productIndice!=userIndice) {
+            previousProductIndice = -1;
+            previousUserIndice = -1;
+            readReturn.productIndice = -1;
+            readReturn.userIndice  = -1;
+        }
         if (userIndice != -1 && productIndice != -1) {
             previousType = "both";
             //major problem, barcode is in both database
             previousProductIndice = -1;
             previousUserIndice = -1;
+
         } else if (productIndice != -1 && !previousType.equals("user")) {
             //just a product scan
             previousType = "product";
             previousProductIndice = productIndice;
             previousUserIndice = -1;
+            
+            //
+            readReturn.productIndice = productIndice;
+            readReturn.userIndice  = -1;
+
+           // JavaFXApplication1.operationObject.isTimeOut = true;
+            // timer.schedule(timerTask, 5000l); ///
         } else if (productIndice != -1 && previousType.equals("user")) {
             //buying product
+            //JavaFXApplication1.operationObject.isTimeOut = false;
 
             System.out.println("Buying product");
             double userBalance = userListMaster.userList.get(previousUserIndice).getBalance();
@@ -86,7 +105,30 @@ public class Main {
             previousType = "null";
             previousProductIndice = -1;
             previousUserIndice = -1;
-
+            //tempo
+            
+            readReturn.productIndice = -1;
+            readReturn.userIndice = -1;
+            //
+            JavaFXApplication1.newBalanceData.setText(Double.toString(userBalance - itemPrice));
+            JavaFXApplication1.oldBalanceData.setText(Double.toString(userBalance));
+            ///
+             Timer timer = new Timer();
+             TimerTask timerTask = new TimerTask() {
+        @Override
+        public void run() {
+            Platform.runLater(
+                    () -> {
+                        // Update UI here.
+                         JavaFXApplication1.newBalanceData.setText("");
+                         JavaFXApplication1.oldBalanceData.setText("");
+                    }
+            );
+            //timer.schedule(timerTask, 5000l);
+        }
+    };
+    ///
+            timer.schedule(timerTask, 4500); ///
         } else if (userIndice != -1 && !previousType.equals("product")) {
             //
             previousType = "user";
@@ -100,13 +142,12 @@ public class Main {
             previousType = "user";
             previousProductIndice = -1;
             previousUserIndice = userIndice;
-            
-        }
-//        else if (userIndice != -1 && previousType.equals("user")) {
-//            previousType = "user";
-//            previousProductIndice = -1;
-//            previousUserIndice = userIndice;
-//        }
+
+        } //        else if (userIndice != -1 && previousType.equals("user")) {
+        //            previousType = "user";
+        //            previousProductIndice = -1;
+        //            previousUserIndice = userIndice;
+        //        }
         else {
             previousProductIndice = -1;
             previousUserIndice = -1;
@@ -115,24 +156,20 @@ public class Main {
             /// next is ready for new operation
         }
 
-        
         ///
         if (whipeProductReturn) {
             whipeProductReturn = false;
-            
+
         }
         if (whipeUserReturn) {
             whipeUserReturn = false;
         }
-        
-        
+
         ///saved all database
         writeUserDataFile(userListMaster);
         writeProdctDataFile(productListMaster);
         readReturn.productListMaster = productListMaster;
         readReturn.userListMaster = userListMaster;
-        //readReturn.productIndice = productIndice;
-        //readReturn.userIndice = userIndice;
 
         return readReturn;
     }
