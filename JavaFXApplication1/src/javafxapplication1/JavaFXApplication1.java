@@ -475,7 +475,6 @@ public class JavaFXApplication1 extends Application implements EventHandler<KeyE
                     userListMaster.userList.add(user);
 
                 }
-
                 Main.writeUserDataFile(userListMaster);
                 manageUserPane.getChildren().removeAll(saveButton, backButton, scrollPane);
                 iniManageUser(manageUserPane, selection);
