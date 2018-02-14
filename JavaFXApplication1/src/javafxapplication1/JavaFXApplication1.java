@@ -42,7 +42,8 @@ import javafx.scene.media.AudioClip;
 public class JavaFXApplication1 extends Application implements EventHandler<KeyEvent> {
 
     private static final String PASSCODE = "4123";
-    private static final String DEFAULT_PASSCODE = "4123";
+    private static final String DEFAULT_PASSCODE = "4123"; // set as "" when release
+    private static final double MAX_DEBT = 0;
     public static String barcode;
     public static OperationObject operationObject = new OperationObject(); //reset 
     public static Label oldBalanceData = new Label("");
@@ -175,6 +176,9 @@ public class JavaFXApplication1 extends Application implements EventHandler<KeyE
         TextField TFProductQuantity = new TextField("0");
 
         GridPane newProductGrid = new GridPane();
+        newProductGrid.setLayoutX(400);
+        newProductGrid.setLayoutY(200);
+        newProductGrid.setHgap(5);
 
         newProductGrid.add(lblProductCode, 0, 0);
         newProductGrid.add(lblProductName, 0, 1);
@@ -192,12 +196,12 @@ public class JavaFXApplication1 extends Application implements EventHandler<KeyE
         Button createButton = new Button("Create New Product");
         Button backButton = new Button("Return to previous menu");
 
-        createButton.setLayoutX(100);
-        createButton.setLayoutY(200);
+        createButton.setLayoutX(420);
+        createButton.setLayoutY(360);
         createButton.setStyle("-fx-background-color: #34495e;");
         backButton.setStyle("-fx-background-color: #34495e;");
-        backButton.setLayoutX(100);
-        backButton.setLayoutY(235);
+        backButton.setLayoutX(420);
+        backButton.setLayoutY(390);
         newProductPane.getChildren().addAll(newProductGrid, createButton, backButton);
 
         createButton.setOnAction(new EventHandler<ActionEvent>() {
@@ -236,8 +240,22 @@ public class JavaFXApplication1 extends Application implements EventHandler<KeyE
         TextField TFUserFund = new TextField("0");
         TextField TFUserEmail = new TextField("-");
 
+        Pane paneBack = new Pane();
+        paneBack.setLayoutX(380);
+        paneBack.setLayoutY(180);
+        paneBack.setPrefSize(280, 145);
+        paneBack.setMinSize(280, 145);
+        paneBack.setMaxSize(280, 145);
+        paneBack.setStyle("-fx-background-color:#2c3e50;");
+        paneBack.setStyle("-fx-background-color:#34495e;");
+        newUserPane.getChildren().add(paneBack);
+        
         GridPane newUserGrid = new GridPane();
-
+        
+        newUserGrid.setLayoutX(400);
+        newUserGrid.setLayoutY(200);
+        newUserGrid.setHgap(5);
+        
         newUserGrid.add(lblUserID, 0, 0);
         newUserGrid.add(lblUserName, 0, 1);
         newUserGrid.add(lblUserFund, 0, 2);
@@ -254,12 +272,12 @@ public class JavaFXApplication1 extends Application implements EventHandler<KeyE
         Button createButton = new Button("Create New User");
         Button backButton = new Button("Return to previous menu");
 
-        createButton.setLayoutX(150);
-        createButton.setLayoutY(200);
+        createButton.setLayoutX(420);
+        createButton.setLayoutY(360);
         createButton.setStyle("-fx-background-color: #34495e;");
         backButton.setStyle("-fx-background-color: #34495e;");
-        backButton.setLayoutX(150);
-        backButton.setLayoutY(250);
+        backButton.setLayoutX(420);
+        backButton.setLayoutY(390);
         newUserPane.getChildren().addAll(newUserGrid, createButton, backButton);
 
         createButton.setOnAction(new EventHandler<ActionEvent>() {
@@ -385,6 +403,12 @@ public class JavaFXApplication1 extends Application implements EventHandler<KeyE
             TFPName.setStyle("-fx-text-inner-color: green;");
             TFPPrice.setStyle("-fx-text-inner-color: green;");
             TFPQuantity.setStyle("-fx-text-inner-color: green;");
+            if (masterProductList.productList.get(i).getQuantityLeft() ==0) {
+                TFPQuantity.setStyle("-fx-text-inner-color: orange;");
+            }
+            if (masterProductList.productList.get(i).getQuantityLeft() <0) {
+                TFPQuantity.setStyle("-fx-text-inner-color: red;");
+            }
 
             TFPCode.setFont(Font.font("Abel", FontWeight.BOLD, 12));
             TFPName.setFont(Font.font("Abel", FontWeight.BOLD, 12));
@@ -517,11 +541,22 @@ public class JavaFXApplication1 extends Application implements EventHandler<KeyE
             TFPUserName.setAlignment(Pos.CENTER);
             TFPBalance.setAlignment(Pos.CENTER);
             TFPEmail.setAlignment(Pos.CENTER);
+            
+            TFPCardID.setFont(Font.font("Abel", FontWeight.BOLD, 12));
+            TFPUserName.setFont(Font.font("Abel", FontWeight.BOLD, 12));
+            TFPBalance.setFont(Font.font("Abel", FontWeight.BOLD, 12));
+            TFPEmail.setFont(Font.font("Abel", FontWeight.BOLD, 12));
 
             TFPCardID.setStyle("-fx-text-inner-color: green;");
             TFPUserName.setStyle("-fx-text-inner-color: green;");
             TFPBalance.setStyle("-fx-text-inner-color: green;");
             TFPEmail.setStyle("-fx-text-inner-color: green;");
+            if (userListMaster.userList.get(i).getBalance()<1) {
+                TFPBalance.setStyle("-fx-text-inner-color: orange;");
+            }
+            if (userListMaster.userList.get(i).getBalance()<0) {
+                TFPBalance.setStyle("-fx-text-inner-color: red;");
+            }
 
             TextField TFCardID = new TextField(userListMaster.userList.get(i).getCardId());
             TextField TFUserName = new TextField(userListMaster.userList.get(i).getUsername());
@@ -622,6 +657,7 @@ public class JavaFXApplication1 extends Application implements EventHandler<KeyE
         TextField TFID;
         TextField TFName;
         TextField TFBalance;
+        
 
         TFProductCode = operationObject.TFProductCode;
         TFProductName = operationObject.TFProductName;
@@ -630,6 +666,13 @@ public class JavaFXApplication1 extends Application implements EventHandler<KeyE
         TFName = operationObject.TFName;
         TFBalance = operationObject.TFBalance;
 
+        TFProductCode.setFont(Font.font("Abel", FontWeight.BOLD, 12));
+        TFProductName.setFont(Font.font("Abel", FontWeight.BOLD, 12));
+        TFProductPrice.setFont(Font.font("Abel", FontWeight.BOLD, 12));
+        TFID.setFont(Font.font("Abel", FontWeight.BOLD, 12));
+        TFName.setFont(Font.font("Abel", FontWeight.BOLD, 12));
+        TFBalance.setFont(Font.font("Abel", FontWeight.BOLD, 12));
+        
         // l1 hbox
         HBox hBoxOne = new HBox();
         //VBox label description product
@@ -638,9 +681,6 @@ public class JavaFXApplication1 extends Application implements EventHandler<KeyE
         Label lblProductCode = new Label("Product Code Bar");
         Label lblProductName = new Label("Name");
         Label lblProductPrice = new Label("Price");
-        lblProductCode.setTextFill(Color.web("#bdc3c7"));
-        lblProductName.setTextFill(Color.web("#bdc3c7"));
-        lblProductPrice.setTextFill(Color.web("#bdc3c7"));
         lblProductCode.setFont(Font.font("Abel", FontWeight.BOLD, 12));
         lblProductName.setFont(Font.font("Abel", FontWeight.BOLD, 12));
         lblProductPrice.setFont(Font.font("Abel", FontWeight.BOLD, 12));
@@ -677,9 +717,6 @@ public class JavaFXApplication1 extends Application implements EventHandler<KeyE
         Label lblUserID = new Label("Card ID");
         Label lblUserName = new Label("Name");
         Label lblUserBalance = new Label("Account Balance");
-        lblUserID.setTextFill(Color.web("#bdc3c7"));
-        lblUserName.setTextFill(Color.web("#bdc3c7"));
-        lblUserBalance.setTextFill(Color.web("#bdc3c7"));
         lblUserID.setFont(Font.font("Abel", FontWeight.BOLD, 12));
         lblUserName.setFont(Font.font("Abel", FontWeight.BOLD, 12));
         lblUserBalance.setFont(Font.font("Abel", FontWeight.BOLD, 12));
@@ -719,11 +756,6 @@ public class JavaFXApplication1 extends Application implements EventHandler<KeyE
         Label insLogout = new Label("To Logout: Scan your card again while logged in");
         Label insProduct = new Label("To Examine a product: Scan the produit whille logged out");
         Label insBuy = new Label("To Buy a product: First log in with your card then scan the product");
-        insLogin.setTextFill(Color.web("#bdc3c7"));
-        insLogout.setTextFill(Color.web("#bdc3c7"));
-        insProduct.setTextFill(Color.web("#bdc3c7"));
-        insBuy.setTextFill(Color.web("#bdc3c7"));
-        //
         insLogin.setFont(Font.font("Abel", FontWeight.BOLD, 12));
         insLogout.setFont(Font.font("Abel", FontWeight.BOLD, 12));
         insProduct.setFont(Font.font("Abel", FontWeight.BOLD, 12));
@@ -792,6 +824,7 @@ public class JavaFXApplication1 extends Application implements EventHandler<KeyE
             @Override
             public void handle(ActionEvent event) {
                 if (passField.getText().equals(PASSCODE)) {
+                    Main.playSound("checkout.wav");
                     loginStack.setVisible(false);
                     selection.setVisible(true);
                     passField.clear();

@@ -76,6 +76,13 @@ public class Main {
 //            readReturn.userIndice  = userIndice;
 //            previousType = "user";
 //        }
+        if (userIndice == 0) {
+            previousProductIndice = -1;
+            previousUserIndice = -1;
+            previousType = "null";
+            readReturn.productIndice =-1;
+            readReturn.userIndice    =-1;
+        }
         if (userIndice != -1 && productIndice != -1) {
             previousType = "both";
             //major problem, barcode is in both database
@@ -114,8 +121,8 @@ public class Main {
             readReturn.productIndice = -1;
             readReturn.userIndice = -1;
             //
-            JavaFXApplication1.newBalanceData.setText(Double.toString(userBalance - itemPrice));
-            JavaFXApplication1.oldBalanceData.setText(Double.toString(userBalance));
+            JavaFXApplication1.newBalanceData.setText(Double.toString(userBalance - itemPrice)+"$");
+            JavaFXApplication1.oldBalanceData.setText(Double.toString(userBalance)+"$");
             ///
             
             
@@ -304,10 +311,10 @@ public class Main {
         }
         System.out.println("Done");
     }
-    public static  void playSound(String file) {
+    public static void playSound(String file) {
         
         if (file.equals("checkout.wav")) {
-         //    AudioClip note = new AudioClip(this.getClass().getResource("checkout.wav").toString());
+        
             URL resource = Main.class.getResource("checkout.wav");
             AudioClip note = new AudioClip(resource.toString());
             note.play();
