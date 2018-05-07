@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package javafxapplication1;
 
 import java.util.ArrayList;
@@ -41,18 +36,32 @@ import javafx.scene.media.AudioClip;
  */
 public class JavaFXApplication1 extends Application implements EventHandler<KeyEvent> {
 
-    private static final String PASSCODE = "4123";
+    //Note to any readed of the code:
+    //      ...
+    
+    private static final String PASSCODE = "4123"; //Hardcoded passcode, will be saved in datafile in futur
     private static final String DEFAULT_PASSCODE = "4123"; // set as "" when release
     private static final double MAX_DEBT = 0;
+    
+    //the ugly four, those are a groupe of global variables necessary for the
+    //well function of the softwere due to the Main.java and JavaFxApplication1.java seperation
     public static String barcode;
     public static OperationObject operationObject = new OperationObject(); //reset 
-    public static Label oldBalanceData = new Label("");
+    //those gloabal variable are cool, because they are graphical component,
+    //they are modified by Main.readOperation to print the needed informations.
+    public static Label oldBalanceData = new Label(""); 
     public static Label newBalanceData = new Label("");
-
+    //
+    public static Pane opPane;
+    
     @Override
-    public void start(Stage primaryStage) {
+    public void start(Stage primaryStage)  {
+        
+       // Popup.popup("Alert", "Message displayed");
+        
         StackPane root = new StackPane();
         Pane paneOperation = new Pane();
+        opPane = paneOperation;
         Pane paneAdmin = new Pane();
 
         final ArrayList<TextField> TFList;
@@ -164,6 +173,8 @@ public class JavaFXApplication1 extends Application implements EventHandler<KeyE
         launch(args);
     }
 
+    //##########################################################################
+    //admin pane subpane
     public void iniNewProduct(Pane newProductPane, Pane selection) {
 
         Label lblProductCode = new Label("Product Code Bar");
@@ -211,10 +222,18 @@ public class JavaFXApplication1 extends Application implements EventHandler<KeyE
                 productList.productList = new ArrayList<Product>();
                 productList = Main.readProductDataFile(productList);
                 Product product = new Product();
+                
+                try {
                 product.setProductCode(TFProductCode.getText());
                 product.setProductName(TFProductName.getText());
                 product.setPrice(Integer.parseInt(TFProductPrice.getText()));
                 product.setQuantityLeft(Integer.parseInt(TFProductQuantity.getText()));
+                }
+                    catch (Exception e) {
+                        System.out.println("////////////////////");
+                        System.out.println("//INPUT TYPE ERROR//");
+                        System.out.println("////////////////////");
+                    }
                 productList.productList.add(product);
                 Main.writeProdctDataFile(productList);
             }
@@ -266,7 +285,7 @@ public class JavaFXApplication1 extends Application implements EventHandler<KeyE
         newUserGrid.add(TFUserFund, 1, 2);
         newUserGrid.add(TFUserEmail, 1, 3);
 
-        newUserGrid.setStyle("-fx-background-color:#2c3e50;");
+        newUserGrid.setStyle("-fx-background-color:#34495e;");
         newUserPane.setVisible(false);
 
         Button createButton = new Button("Create New User");
@@ -288,10 +307,17 @@ public class JavaFXApplication1 extends Application implements EventHandler<KeyE
                 userListMaster = Main.readUserDataFile(userListMaster);
                 User user = new User();
 
+                try {
                 user.setCardId(TFUserID.getText());
                 user.setUsername(TFUserName.getText());
                 user.setBalance(Double.parseDouble(TFUserFund.getText())); //careful now
                 user.setEmail(TFUserEmail.getText());
+                }
+                    catch (Exception e) {
+                        System.out.println("////////////////////");
+                        System.out.println("//INPUT TYPE ERROR//");
+                        System.out.println("////////////////////");
+                    }
                 userListMaster.userList.add(user);
                 Main.writeUserDataFile(userListMaster);
             }
@@ -336,10 +362,17 @@ public class JavaFXApplication1 extends Application implements EventHandler<KeyE
 
                 for (int i = 0; i < saveReturnList.size(); i++) {
                     Product product = new Product();
+                    try {
                     product.setPrice(Double.parseDouble(saveReturnList.get(i).price.getText()));
                     product.setProductCode(saveReturnList.get(i).productCode.getText());
                     product.setProductName(saveReturnList.get(i).productName.getText());
                     product.setQuantityLeft(Integer.parseInt(saveReturnList.get(i).quantityLeft.getText()));
+                    }
+                    catch (Exception e) {
+                        System.out.println("////////////////////");
+                        System.out.println("//INPUT TYPE ERROR//");
+                        System.out.println("////////////////////");
+                    }
                     productListMaster.productList.add(product);
 
                 }
@@ -492,11 +525,19 @@ public class JavaFXApplication1 extends Application implements EventHandler<KeyE
 
                 for (int i = 0; i < saveReturnList.size(); i++) {
                     User user = new User();
+                    try {
                     user.setBalance(Double.parseDouble(saveReturnList.get(i).TFBalance.getText()));
                     user.setCardId(saveReturnList.get(i).TFCardID.getText());
                     user.setUsername(saveReturnList.get(i).TFUserName.getText());
                     user.setEmail(saveReturnList.get(i).TFEmail.getText());
+                    }
+                    catch (Exception e) {
+                        System.out.println("////////////////////");
+                        System.out.println("//INPUT TYPE ERROR//");
+                        System.out.println("////////////////////");
+                    }
                     userListMaster.userList.add(user);
+                    user = null;
 
                 }
                 Main.writeUserDataFile(userListMaster);
@@ -597,21 +638,9 @@ public class JavaFXApplication1 extends Application implements EventHandler<KeyE
         }
         manageUserPane.getChildren().add(scrollPane);
     }
+    //##########################################################################
 
-    public void keyAddtoList(ArrayList<String> barcodeList, String newKey) {
-        barcodeList.add(newKey);
-
-    }
-
-    public String keyConsume(ArrayList<String> barcodeList) {
-        String barcode = "";
-        for (int i = 0; i < barcodeList.size(); i++) {
-            barcode = barcode + barcodeList.get(i);
-        }
-        barcodeList.removeAll(barcodeList);
-        return barcode;
-    }
-
+    //Obsolete
     @Override
     public void handle(KeyEvent event) {
         if (event.getCode().toString().equals("ENTER")) {
@@ -621,7 +650,9 @@ public class JavaFXApplication1 extends Application implements EventHandler<KeyE
         }
         // System.out.println(event.getCode().toString());
     }
-
+    
+    //#########################################################################
+    //the Panes
     public ArrayList<TextField> iniOperationPane(Pane paneOperation) {
 
         //
@@ -772,8 +803,8 @@ public class JavaFXApplication1 extends Application implements EventHandler<KeyE
         stackIns.setStyle("-fx-background-color: #34495e;");
 
         paneOperation.getChildren().add(stackIns);
-        paneOperation.setStyle("-fx-background-color:#2c3e50;");
-
+        paneOperation.setStyle("-fx-background-color:#2c3e50;");//op's base color
+        
         ArrayList<TextField> TFList = new ArrayList<TextField>();
         TFList.add(TFProductCode);
         TFList.add(TFProductName);
@@ -911,10 +942,11 @@ public class JavaFXApplication1 extends Application implements EventHandler<KeyE
         paneAdmin.getChildren().add(selection);
     }
 
-    public void iniExpansion() {
+    public void iniExpansionPane() {
 
     }
-
+    //#########################################################################
+    
     public String digitConverter(String digit) {
         String number = "";
         switch (digit) {
@@ -971,4 +1003,17 @@ public class JavaFXApplication1 extends Application implements EventHandler<KeyE
         TFList.get(6).setText(productCode);
     }
 
+    public void keyAddtoList(ArrayList<String> barcodeList, String newKey) {
+        barcodeList.add(newKey);
+
+    }
+
+    public String keyConsume(ArrayList<String> barcodeList) {
+        String barcode = "";
+        for (int i = 0; i < barcodeList.size(); i++) {
+            barcode = barcode + barcodeList.get(i);
+        }
+        barcodeList.removeAll(barcodeList);
+        return barcode;
+    }
 }

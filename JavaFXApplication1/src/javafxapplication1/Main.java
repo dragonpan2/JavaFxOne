@@ -24,23 +24,10 @@ import javafx.application.Platform;
  */
 public class Main {
 
-    private static String previousType = "null";
-    private static int previousUserIndice = -1;
+    private static String previousType = "null"; //Those static variable are used in readOperation
+    private static int previousUserIndice = -1;  //to understund the type of scan
     private static int previousProductIndice = -1;
     
-
-    public void MainMethod() {
-
-    }
-
-    public void buyOperation() {
-
-    }
-
-    public void userProductLookup(String barcode) {
-
-    }
-
     public static ReadReturn readOperation(String barCode, int userIndice, int productIndice) {
         ReadReturn readReturn = new ReadReturn();
         ProductList productListMaster = new ProductList();
@@ -61,7 +48,9 @@ public class Main {
         readReturn.productIndice = productIndice;
         readReturn.userIndice = userIndice;
 
+        System.out.println("/////////////////////");
         System.out.println("ReadOperation Debut:");
+        System.out.println("/////////////////////");
         System.out.println("PreviousType: " + previousType);
         System.out.println("PreviousProductIndice: " + previousProductIndice);
         System.out.println("PreviousUserIndice: " + previousUserIndice);
@@ -69,13 +58,6 @@ public class Main {
         System.out.println("UserIndice: " + userIndice);
         System.out.println("---------------------");
         
-//        if ((userIndice == 0 || productIndice == 0) && productIndice!=userIndice && previousType .equals("product")) {
-//            previousProductIndice = -1;
-//            previousUserIndice = userIndice;
-//            readReturn.productIndice = -1;
-//            readReturn.userIndice  = userIndice;
-//            previousType = "user";
-//        }
         if (userIndice == 0) {
             previousProductIndice = -1;
             previousUserIndice = -1;
@@ -127,24 +109,24 @@ public class Main {
             
             
             playSound("checkout.wav");
-           
+           JavaFXApplication1.opPane.setStyle("-fx-background-color:#33FF57;");
+           //for failed #FF5733
             
              Timer timer = new Timer();
              TimerTask timerTask = new TimerTask() {
-        @Override
-        public void run() {
-            Platform.runLater(
-                    () -> {
-                        // Update UI here.
-                         JavaFXApplication1.newBalanceData.setText("");
-                         JavaFXApplication1.oldBalanceData.setText("");
-                    }
-            );
-            //timer.schedule(timerTask, 5000l);
-        }
-    };
-    ///
+                @Override
+                public void run() {
+                    Platform.runLater(
+                            () -> {
+                                 JavaFXApplication1.opPane.setStyle("-fx-background-color:#2c3e50;");
+                                 JavaFXApplication1.newBalanceData.setText("");
+                                 JavaFXApplication1.oldBalanceData.setText("");
+                            }
+                    );
+                }
+            };
             timer.schedule(timerTask, 4500); ///
+            
         } else if (userIndice != -1 && !previousType.equals("product")) {
             //
             previousType = "user";
@@ -173,11 +155,11 @@ public class Main {
         }
 
         ///
-        if (whipeProductReturn) {
+        if (whipeProductReturn == true) {
             whipeProductReturn = false;
 
         }
-        if (whipeUserReturn) {
+        if (whipeUserReturn == true) {
             whipeUserReturn = false;
         }
 
@@ -190,6 +172,7 @@ public class Main {
         return readReturn;
     }
 
+    //give a UserList and write it as the new userListMaster in data file
     public static void writeUserDataFile(UserList userListMaster) {
         System.out.println("Writing UserData");
         try {
@@ -204,7 +187,8 @@ public class Main {
         }
         System.out.println("UserData Written");
     }
-
+    
+    //give a ProductList, write it as the new productListMaster
     public static void writeProdctDataFile(ProductList productListMaster) {
         System.out.println("Writing ProductData");
         try {
@@ -219,7 +203,8 @@ public class Main {
         }
         System.out.println("ProductData Written");
     }
-
+    
+    //return the masterProductList from data file
     public static ProductList readProductDataFile(ProductList productListMaster) {
         System.out.println("Reading ProductList");
         try {
@@ -238,6 +223,7 @@ public class Main {
         return productListMaster;
     }
 
+    //return the MasterUserDataFile from the data file 
     public static UserList readUserDataFile(UserList userListMaster) {
         System.out.println("Reading UserList");
         try {
@@ -255,6 +241,7 @@ public class Main {
         return userListMaster;
     }
 
+    //Add a new Product with the follow attribut to the loaded list
     public static void addNewProduct(ProductList productListMaster, String productCode, String productName, double price, int quantityToAdd) {
         Product newProduct = new Product();
 
@@ -276,6 +263,7 @@ public class Main {
         productListMaster.productList.add(newProduct);
     }
 
+    //add a new user with the following attributs to the loaded list
     public static void addNewUser(UserList userListMaster, String idBarcode, String name, double balance) {
         User newUser = new User();
         newUser.setCardId(idBarcode);
@@ -285,6 +273,7 @@ public class Main {
         userListMaster.userList.add(newUser);
     }
 
+    
     public void userBalanceAdjust(User user, double adjustAmount) {
         user.setBalance(user.getBalance() + adjustAmount);
     }
@@ -311,8 +300,10 @@ public class Main {
         }
         System.out.println("Done");
     }
+    
     public static void playSound(String file) {
         
+        //
         if (file.equals("checkout.wav")) {
         
             URL resource = Main.class.getResource("checkout.wav");
